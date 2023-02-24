@@ -13,7 +13,10 @@ fun Navigation() {
             MainScreen(navController = navController)
         }
         composable(route = Screen.NewGame.route) {
-            NewGame()
+            NewGame(navController = navController)
+        }
+        composable(route = Screen.Options.route) {
+            Options(navController = navController)
         }
     }
 }

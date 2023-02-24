@@ -30,7 +30,7 @@ fun MainScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    navController.navigate(Screen.NewGame.route)
+                    navController.navigate(Screen.Options.route)
                 }
             ) {
                 Text(text = "Alternativ")
