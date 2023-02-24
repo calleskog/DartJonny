@@ -1,10 +1,9 @@
 package com.example.dartjonny
 
-import androidx.activity.ComponentActivity
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun NewGame() {
-    Text(text = "Spelare")
+fun Options() {
+    Text(text = "Options")
 }
