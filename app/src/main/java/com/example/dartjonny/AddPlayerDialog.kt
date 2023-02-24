@@ -24,18 +24,16 @@ import androidx.compose.ui.window.DialogProperties
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddPlayerDialog(
-    onDismiss: () -> Unit, onConfirm: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
 ) {
     var playerName by remember {
         mutableStateOf("")
     }
 
     Dialog(
-        onDismissRequest = {
-            onDismiss()
-        }, properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
+        onDismissRequest = { onDismiss() },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Card(
             elevation = 5.dp,
