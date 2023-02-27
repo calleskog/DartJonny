@@ -1,4 +1,4 @@
-package com.example.dartjonny
+package com.example.dartjonny.presentation.newGame
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
@@ -8,9 +8,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import com.example.dartjonny.Screen
 
 @Composable
-fun NewGame(navController: NavController, viewModel: AddNewPlayerModel) {
+fun NewGameScreen(
+    navController: NavController,
+    viewModel: AddNewPlayerModel
+) {
     Column() {
         Text(text = "Spelare")
 
@@ -38,6 +42,7 @@ fun NewGame(navController: NavController, viewModel: AddNewPlayerModel) {
             },
             onConfirm = {
                 // TODO: Lägg till spelare (viewmodel.addPlayer)
+                print(viewModel.playerName)
             }
         )
     }

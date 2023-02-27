@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dartjonny.presentation.newGame.AddNewPlayerModel
+import com.example.dartjonny.presentation.newGame.NewGameScreen
 
 @Composable
 fun Navigation(viewModel: AddNewPlayerModel) {
@@ -13,7 +15,7 @@ fun Navigation(viewModel: AddNewPlayerModel) {
             MainScreen(navController = navController)
         }
         composable(route = Screen.NewGame.route) {
-            NewGame(navController = navController, viewModel = viewModel)
+            NewGameScreen(navController = navController, viewModel = viewModel)
         }
         composable(route = Screen.Options.route) {
             Options(navController = navController)

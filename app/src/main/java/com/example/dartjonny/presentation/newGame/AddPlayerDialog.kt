@@ -1,15 +1,11 @@
-package com.example.dartjonny
+package com.example.dartjonny.presentation.newGame
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -27,9 +25,7 @@ fun AddPlayerDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    var playerName by remember {
-        mutableStateOf("")
-    }
+    val viewModel: AddNewPlayerModel = viewModel()
 
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -57,9 +53,8 @@ fun AddPlayerDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextField(
-                        value = playerName, onValueChange = {
-                            playerName = it
-                        },
+                        value = viewModel.playerName,
+                        onValueChange = { viewModel.playerName = it},
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
