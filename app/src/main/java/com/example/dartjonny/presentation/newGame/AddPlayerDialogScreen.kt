@@ -21,7 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddPlayerDialog(
+fun AddPlayerDialogScreen(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {

@@ -1,21 +1,29 @@
 package com.example.dartjonny.presentation.newGame
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dartjonny.Screen
+import java.lang.reflect.Modifier
 
 @Composable
-fun NewGameScreen(
+fun TestScreen(
     navController: NavController,
-    viewModel: AddNewPlayerModel
+    viewModel: NewGameViewModel = hiltViewModel()
 ) {
-    Column() {
+    val state = viewModel.state.value
+
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Text(text = "Spelare")
 
         Button(
@@ -26,24 +34,13 @@ fun NewGameScreen(
             Text(text = "Tillbaka")
         }
 
-        Button(
+        IconButton(
             onClick = {
-                viewModel.onAddPlayerClick()
+                viewModel.onEvent(NewGameEvent.)
             }
         ) {
             Text(text = "Lägg till spelare")
-            Icon(Icons.Default.Add, contentDescription = null)
+            Icon(Icons.Default.Add, contentDescription = "Lägg till spelare")
         }
     }
-    if (viewModel.isDialogShown) {
-        AddPlayerDialogScreen(
-            onDismiss = {
-                viewModel.onDissmissDialog()
-            },
-            onConfirm = {
-                // TODO: Lägg till spelare (viewmodel.addPlayer)
-            }
-        )
-    }
 }
-
