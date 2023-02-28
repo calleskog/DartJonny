@@ -1,4 +1,4 @@
-package com.example.dartjonny.presentation.components
+package com.example.dartjonny.dart_jonny.presentation.player.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.dartjonny.model.Player
+import com.example.dartjonny.dart_jonny.model.Player
 
 @Composable
 fun PlayerItem(

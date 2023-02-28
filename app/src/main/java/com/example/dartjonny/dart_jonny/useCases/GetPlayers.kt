@@ -1,7 +1,7 @@
-package com.example.dartjonny.useCases
+package com.example.dartjonny.dart_jonny.useCases
 
-import com.example.dartjonny.model.Player
-import com.example.dartjonny.repository.PlayerRepository
+import com.example.dartjonny.dart_jonny.model.Player
+import com.example.dartjonny.dart_jonny.data.repository.PlayerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

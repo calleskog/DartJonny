@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.dartjonny.presentation.newGame.AddNewPlayerModel
-import com.example.dartjonny.presentation.newGame.NewGameScreen
+import com.example.dartjonny.dart_jonny.presentation.player.AddNewPlayerModel
+import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameScreen
 
 @Composable
 fun Navigation(viewModel: AddNewPlayerModel) {

@@ -1,8 +1,8 @@
-package com.example.dartjonny.repository
+package com.example.dartjonny.dart_jonny.data.repository
 
-import com.example.dartjonny.database.PlayerDao
-import com.example.dartjonny.model.Player
-import com.example.dartjonny.model.PlayerUpdate
+import com.example.dartjonny.dart_jonny.data.database.PlayerDao
+import com.example.dartjonny.dart_jonny.model.Player
+import com.example.dartjonny.dart_jonny.model.PlayerUpdate
 import kotlinx.coroutines.flow.Flow
 
 class PlayerRepositoryImpl(

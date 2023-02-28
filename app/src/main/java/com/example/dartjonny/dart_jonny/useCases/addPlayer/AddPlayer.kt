@@ -1,8 +1,8 @@
-package com.example.dartjonny.useCases
+package com.example.dartjonny.dart_jonny.useCases.addPlayer
 
-import com.example.dartjonny.model.InvalidPlayerException
-import com.example.dartjonny.model.Player
-import com.example.dartjonny.repository.PlayerRepository
+import com.example.dartjonny.dart_jonny.model.InvalidPlayerException
+import com.example.dartjonny.dart_jonny.model.Player
+import com.example.dartjonny.dart_jonny.data.repository.PlayerRepository
 
 class AddPlayer(
     private val repository: PlayerRepository

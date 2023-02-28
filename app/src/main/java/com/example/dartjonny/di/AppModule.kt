@@ -2,13 +2,14 @@ package com.example.dartjonny.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.dartjonny.database.PlayerDatabase
-import com.example.dartjonny.repository.PlayerRepository
-import com.example.dartjonny.repository.PlayerRepositoryImpl
-import com.example.dartjonny.useCases.AddPlayer
-import com.example.dartjonny.useCases.DeletePlayer
-import com.example.dartjonny.useCases.GetPlayers
-import com.example.dartjonny.useCases.PlayerUseCases
+import com.example.dartjonny.dart_jonny.data.database.PlayerDatabase
+import com.example.dartjonny.dart_jonny.data.repository.PlayerRepository
+import com.example.dartjonny.dart_jonny.data.repository.PlayerRepositoryImpl
+import com.example.dartjonny.dart_jonny.useCases.addPlayer.AddPlayer
+import com.example.dartjonny.dart_jonny.useCases.newGame.DeletePlayer
+import com.example.dartjonny.dart_jonny.useCases.GetPlayers
+import com.example.dartjonny.dart_jonny.useCases.addPlayer.AddPlayerUseCases
+import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,11 +38,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePlayerUseCases(repository: PlayerRepository): PlayerUseCases {
-        return PlayerUseCases(
-            getPlayers = GetPlayers(repository),
-            deletePlayer = DeletePlayer(repository),
+    fun provideAddPlayerUseCases(repository: PlayerRepository): AddPlayerUseCases {
+        return AddPlayerUseCases(
             addPlayer = AddPlayer(repository)
+        )
+
+    }@Provides
+    @Singleton
+    fun provideNewGameUseCases(repository: PlayerRepository): NewGameUseCases {
+        return NewGameUseCases(
+            getPlayers = GetPlayers(repository),
+            deletePlayer = DeletePlayer(repository)
         )
     }
 }

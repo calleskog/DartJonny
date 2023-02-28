@@ -17,13 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.dartjonny.dart_jonny.presentation.player.AddNewPlayerModel
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddPlayerDialogScreen(
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    viewModel: AddNewPlayerModel
 ) {
     val viewModel: AddNewPlayerModel = viewModel()
 

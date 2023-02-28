@@ -1,24 +1,23 @@
-package com.example.dartjonny.presentation.newGame
+package com.example.dartjonny.dart_jonny.presentation.newGame
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dartjonny.useCases.PlayerUseCases
+import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NewGameViewModel @Inject constructor(
-    private val playerUseCases: PlayerUseCases
+    private val newGameUseCases: NewGameUseCases
 ): ViewModel() {
-    private val _state = mutableStateOf(PlayersState())
-    val state: State<PlayersState> = _state
+    private val _state = mutableStateOf(NewGameState())
+    val state: State<NewGameState> = _state
 
     private var getPlayersJob: Job? = null
 
@@ -30,15 +29,23 @@ class NewGameViewModel @Inject constructor(
         when(event) {
             is NewGameEvent.DeletePlayer -> {
                 viewModelScope.launch {
-                    playerUseCases.deletePlayer(event.player)
+                    newGameUseCases.deletePlayer(event.player)
                 }
             }
+            is NewGameEvent.addPlayerButton -> TODO()
+            is NewGameEvent.goBackButton -> TODO()
+            is NewGameEvent.startNewGameButton -> TODO()
         }
     }
 
     private fun getPlayers() {
         getPlayersJob?.cancel()
-        getPlayersJob = playerUseCases.getPlayers()
+        getPlayersJob = newGameUseCases.getPlayers()
+            .onEach { players ->
+                _state.value = state.value.copy(
+                    players = players
+                )
+            }
             .launchIn(viewModelScope)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.dartjonny.model
+package com.example.dartjonny.dart_jonny.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
