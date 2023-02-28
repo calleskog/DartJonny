@@ -1,4 +1,4 @@
-package com.example.dartjonny.dart_jonny.useCases
+package com.example.dartjonny.dart_jonny.useCases.newGame
 
 import com.example.dartjonny.dart_jonny.model.Player
 import com.example.dartjonny.dart_jonny.data.repository.PlayerRepository

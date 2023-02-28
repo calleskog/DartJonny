@@ -5,11 +5,7 @@ import androidx.room.Room
 import com.example.dartjonny.dart_jonny.data.database.PlayerDatabase
 import com.example.dartjonny.dart_jonny.data.repository.PlayerRepository
 import com.example.dartjonny.dart_jonny.data.repository.PlayerRepositoryImpl
-import com.example.dartjonny.dart_jonny.useCases.addPlayer.AddPlayer
-import com.example.dartjonny.dart_jonny.useCases.newGame.DeletePlayer
-import com.example.dartjonny.dart_jonny.useCases.GetPlayers
-import com.example.dartjonny.dart_jonny.useCases.addPlayer.AddPlayerUseCases
-import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
+import com.example.dartjonny.dart_jonny.useCases.newGame.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,17 +34,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAddPlayerUseCases(repository: PlayerRepository): AddPlayerUseCases {
-        return AddPlayerUseCases(
-            addPlayer = AddPlayer(repository)
-        )
-
-    }@Provides
-    @Singleton
     fun provideNewGameUseCases(repository: PlayerRepository): NewGameUseCases {
         return NewGameUseCases(
             getPlayers = GetPlayers(repository),
-            deletePlayer = DeletePlayer(repository)
+            deletePlayer = DeletePlayer(repository),
+            addPlayer = AddPlayer(repository)
         )
     }
 }

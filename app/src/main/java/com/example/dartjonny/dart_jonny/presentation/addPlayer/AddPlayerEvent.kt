@@ -1,4 +1,4 @@
-package com.example.dartjonny.dart_jonny.presentation.player
+package com.example.dartjonny.dart_jonny.presentation.addPlayer
 
 sealed class AddPlayerEvent{
     data class EnteredPlayerName(val value: String): AddPlayerEvent()

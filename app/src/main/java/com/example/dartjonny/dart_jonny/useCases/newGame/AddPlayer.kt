@@ -1,4 +1,4 @@
-package com.example.dartjonny.dart_jonny.useCases.addPlayer
+package com.example.dartjonny.dart_jonny.useCases.newGame
 
 import com.example.dartjonny.dart_jonny.model.InvalidPlayerException
 import com.example.dartjonny.dart_jonny.model.Player

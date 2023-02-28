@@ -1,4 +1,4 @@
-package com.example.dartjonny.dart_jonny
+package com.example.dartjonny
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
