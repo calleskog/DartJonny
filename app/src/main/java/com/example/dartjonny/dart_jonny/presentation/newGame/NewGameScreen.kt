@@ -1,52 +1,72 @@
 package com.example.dartjonny.dart_jonny.presentation.newGame
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dartjonny.Screen
-import com.example.dartjonny.presentation.newGame.AddPlayerDialogScreen
-import com.example.dartjonny.dart_jonny.presentation.player.AddNewPlayerModel
+import com.example.dartjonny.dart_jonny.presentation.player.components.PlayerItem
+
 
 @Composable
 fun NewGameScreen(
     navController: NavController,
     viewModel: NewGameViewModel = hiltViewModel()
 ) {
-    Column() {
-        Text(text = "Spelare")
+    val state = viewModel.state.value
 
-        Button(
-            onClick = {
-                navController.navigate(Screen.MainScreen.route)
+    Column() {
+        Row() {
+            Text(text = "Spelare")
+
+            Button(
+                onClick = {
+                    navController.navigate(Screen.MainScreen.route)
+                }
+            ) {
+                Text(text = "Tillbaka")
             }
-        ) {
-            Text(text = "Tillbaka")
         }
 
         Button(
             onClick = {
-                viewModel.onAddPlayerClick()
+                navController.navigate(Screen.AddPlayerScreen.route)
             }
         ) {
             Text(text = "Lägg till spelare")
             Icon(Icons.Default.Add, contentDescription = null)
         }
-    }
-    if (viewModel.isDialogShown) {
-        AddPlayerDialogScreen(
-            onDismiss = {
-                viewModel.onDissmissDialog()
-            },
-            onConfirm = {
-                // TODO: Lägg till spelare (viewmodel.addPlayer)
+
+        LazyColumn(modifier = androidx.compose.ui.Modifier.fillMaxSize()) {
+            items(state.players) {player ->
+                PlayerItem(
+                    player = player,
+                    modifier = androidx.compose.ui.Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(
+                                Screen.AddPlayerScreen.route +
+                                        "?playerId=${player.id}"
+                            )
+                        },
+                    onDeleteClick = {
+                        viewModel.onEvent(NewGameEvent.DeletePlayer(player))
+                    }
+                )
             }
-        )
+        }
     }
 }
 
