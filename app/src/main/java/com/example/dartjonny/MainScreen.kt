@@ -19,20 +19,10 @@ fun MainScreen(navController: NavController) {
     ) {
             Button(
                 onClick = {
-                    navController.navigate(Screen.NewGame.route)
+                    navController.navigate(Screen.NewGameScreen.route)
                 }
             ) {
                 Text(text = "Nytt spel")
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = {
-                    navController.navigate(Screen.Options.route)
-                }
-            ) {
-                Text(text = "Alternativ")
             }
         }
 }
