@@ -4,5 +4,6 @@ sealed class Screen(val route: String) {
     object MainScreen : Screen("main_screen")
     object NewGameScreen : Screen("new_game_screen")
     object AddPlayerScreen: Screen("add_player_screen")
+    object OptionsScreen: Screen("option_screen")
     object GameScreen: Screen("game_screen")
 }

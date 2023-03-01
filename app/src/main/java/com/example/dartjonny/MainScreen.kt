@@ -1,6 +1,9 @@
 package com.example.dartjonny
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,16 +16,26 @@ import androidx.navigation.NavController
 fun MainScreen(navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 50.dp)
+            .padding(30.dp)
     ) {
-            Button(
-                onClick = {
-                    navController.navigate(Screen.NewGameScreen.route)
-                }
-            ) {
-                Text(text = "Nytt spel")
+        Button(
+            modifier = Modifier.padding(20.dp),
+            onClick = {
+                navController.navigate(Screen.NewGameScreen.route)
             }
+        ) {
+            Text(text = "Nytt spel")
         }
+
+        Button(
+            onClick = {
+                navController.navigate(Screen.OptionsScreen.route)
+            }
+        ) {
+            Text(text = "Spel inställning")
+        }
+    }
 }

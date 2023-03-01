@@ -32,9 +32,6 @@ class NewGameViewModel @Inject constructor(
                     newGameUseCases.deletePlayer(event.player)
                 }
             }
-            is NewGameEvent.addPlayerButton -> TODO()
-            is NewGameEvent.goBackButton -> TODO()
-            is NewGameEvent.startNewGameButton -> TODO()
         }
     }
 
