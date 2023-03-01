@@ -27,7 +27,6 @@ fun PlayerItem(
             .clip(CircleShape)
             .background(Color.Black)
     ) {
-
         Text(text = player.playerName)
         Box(
             modifier = Modifier

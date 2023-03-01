@@ -2,7 +2,6 @@ package com.example.dartjonny.dart_jonny.presentation.addPlayer
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dartjonny.dart_jonny.model.InvalidPlayerException
@@ -18,8 +17,8 @@ import javax.inject.Inject
 class AddNewPlayerModel @Inject constructor(
     private val newGameUseCases: NewGameUseCases
 ): ViewModel() {
-    private val _playerName = mutableStateOf("")
-    val playerName: State<String> = _playerName
+    private val _playerName = mutableStateOf(PlayerNameFieldState(playerName = ""))
+    val playerName: State<PlayerNameFieldState> = _playerName
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -27,14 +26,16 @@ class AddNewPlayerModel @Inject constructor(
     fun onEvent(event: AddPlayerEvent) {
         when(event) {
             is AddPlayerEvent.EnteredPlayerName -> {
-                _playerName.value = playerName.value
+                _playerName.value = playerName.value.copy(
+                    playerName = event.value
+                )
             }
             is AddPlayerEvent.SavePlayer -> {
                 viewModelScope.launch {
                     try {
                         newGameUseCases.addPlayer(
                             Player(
-                                playerName = playerName.value
+                                playerName = playerName.value.playerName
                             )
                         )
                         _eventFlow.emit(UiEvent.SavePlayer)

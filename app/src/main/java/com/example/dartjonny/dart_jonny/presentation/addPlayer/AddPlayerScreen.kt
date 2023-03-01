@@ -1,29 +1,25 @@
-package com.example.dartjonny.presentation.newGame
+package com.example.dartjonny.dart_jonny.presentation.addPlayer
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.dartjonny.dart_jonny.presentation.addPlayer.AddNewPlayerModel
-import com.example.dartjonny.dart_jonny.presentation.addPlayer.AddPlayerEvent
+import com.example.dartjonny.Screen
 import kotlinx.coroutines.flow.collectLatest
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddPlayerScreen(
     navController: NavController,
@@ -41,7 +37,8 @@ fun AddPlayerScreen(
                     )
                 }
                 is AddNewPlayerModel.UiEvent.SavePlayer -> {
-                    navController.navigateUp()
+                    print("Added player")
+                    navController.navigate(Screen.NewGameScreen.route)
                 }
             }
         }
@@ -69,7 +66,7 @@ fun AddPlayerScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 TextField(
-                    value = playerNameState,
+                    value = playerNameState.playerName,
                     onValueChange = { viewModel.onEvent(AddPlayerEvent.EnteredPlayerName(it)) },
                     modifier = Modifier.fillMaxWidth()
                 )

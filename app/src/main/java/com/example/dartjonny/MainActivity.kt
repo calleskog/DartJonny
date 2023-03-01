@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.dartjonny.dart_jonny.presentation.addPlayer.AddPlayerScreen
 import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameScreen
-import com.example.dartjonny.presentation.newGame.AddPlayerScreen
 import com.example.dartjonny.ui.theme.DartJonnyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
