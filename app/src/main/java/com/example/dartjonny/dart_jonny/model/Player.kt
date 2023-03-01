@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class Player(
     val playerName: String,
     val points: Double = 0.0,
+    val color: Int,
     @PrimaryKey(autoGenerate = true) val id: Int? = null
 )
 

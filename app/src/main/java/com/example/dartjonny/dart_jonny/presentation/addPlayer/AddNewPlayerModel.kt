@@ -1,5 +1,6 @@
 package com.example.dartjonny.dart_jonny.presentation.addPlayer
 
+import android.graphics.Color
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +37,8 @@ class AddNewPlayerModel @Inject constructor(
                     try {
                         newGameUseCases.addPlayer(
                             Player(
-                                playerName = playerName.value.playerName
+                                playerName = playerName.value.playerName,
+                                color = randomColor()
                             )
                         )
                         _eventFlow.emit(UiEvent.SavePlayer)
@@ -54,5 +57,10 @@ class AddNewPlayerModel @Inject constructor(
     sealed class UiEvent {
         data class ShowSnackbar(val message: String): UiEvent()
         object SavePlayer: UiEvent()
+    }
+
+    fun randomColor(): Int {
+        val rnd = Random()
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }
 }

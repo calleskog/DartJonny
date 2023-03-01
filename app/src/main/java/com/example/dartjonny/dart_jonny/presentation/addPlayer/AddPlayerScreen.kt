@@ -44,61 +44,65 @@ fun AddPlayerScreen(
         }
     }
 
-    Card(
-        elevation = 5.dp,
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier
-            .fillMaxWidth(0.95f)
-            .border(1.dp, color = Black, shape = RoundedCornerShape(15.dp))
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
+        Card(
+            elevation = 5.dp,
+            shape = RoundedCornerShape(15.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp),
-            verticalArrangement = Arrangement.spacedBy(25.dp)
+                .fillMaxWidth(0.95f)
+                .border(1.dp, color = Black, shape = RoundedCornerShape(15.dp))
         ) {
-            Text(
-                text = "LÄGG TILL SPELARE",
-                style = MaterialTheme.typography.h4,
-                textAlign = TextAlign.Center,
-            )
             Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TextField(
-                    value = playerNameState.playerName,
-                    onValueChange = { viewModel.onEvent(AddPlayerEvent.EnteredPlayerName(it)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(30.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
-                Button(
-                    onClick = {
-                        viewModel.onEvent(AddPlayerEvent.SavePlayer)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Black,
-                        contentColor = White
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    shape = CircleShape
+                Text(
+                    text = "LÄGG TILL SPELARE",
+                    style = MaterialTheme.typography.h4,
+                    textAlign = TextAlign.Center,
+                )
+                Column(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(
-                        text = "SPARA",
-                        style = MaterialTheme.typography.h6,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                    TextField(
+                        value = playerNameState.playerName,
+                        onValueChange = { viewModel.onEvent(AddPlayerEvent.EnteredPlayerName(it)) },
+                        modifier = Modifier.fillMaxWidth()
                     )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(30.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            viewModel.onEvent(AddPlayerEvent.SavePlayer)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Black,
+                            contentColor = White
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        shape = CircleShape
+                    ) {
+                        Text(
+                            text = "SPARA",
+                            style = MaterialTheme.typography.h6,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
     }
-
 }

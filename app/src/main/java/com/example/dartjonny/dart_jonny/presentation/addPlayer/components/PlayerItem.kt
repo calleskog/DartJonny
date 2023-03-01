@@ -9,39 +9,48 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.dartjonny.dart_jonny.model.Player
 
 @Composable
 fun PlayerItem(
     player: Player,
-    modifier: Modifier = Modifier,
     onDeleteClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
-            .size(50.dp)
-            .clip(CircleShape)
-            .background(Color.Black)
+            .fillMaxSize()
     ) {
-        Text(text = player.playerName)
-        Box(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .background(Color.Black)
-        )
-        IconButton(
-            onClick = onDeleteClick
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Radera spelare"
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(Color(player.color))
             )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = player.playerName, textAlign = TextAlign.Left)
+                IconButton(
+                    onClick = onDeleteClick
+                ) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                }
+            }
         }
-    }
 
+    }
 }
