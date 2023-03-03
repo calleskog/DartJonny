@@ -23,7 +23,7 @@ fun NewGameScreen(
     navController: NavController,
     viewModel: NewGameViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+    val state = viewModel.players.value
     val scaffoldState = rememberScaffoldState()
     Column() {
         Scaffold(

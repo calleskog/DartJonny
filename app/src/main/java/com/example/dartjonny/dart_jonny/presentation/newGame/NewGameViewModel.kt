@@ -16,8 +16,8 @@ import javax.inject.Inject
 class NewGameViewModel @Inject constructor(
     private val newGameUseCases: NewGameUseCases
 ): ViewModel() {
-    private val _state = mutableStateOf(NewGameState())
-    val state: State<NewGameState> = _state
+    private val _players = mutableStateOf(NewGameState())
+    val players: State<NewGameState> = _players
 
     private var getPlayersJob: Job? = null
 
@@ -39,7 +39,7 @@ class NewGameViewModel @Inject constructor(
         getPlayersJob?.cancel()
         getPlayersJob = newGameUseCases.getPlayers()
             .onEach { players ->
-                _state.value = state.value.copy(
+                _players.value = this.players.value.copy(
                     players = players
                 )
             }
