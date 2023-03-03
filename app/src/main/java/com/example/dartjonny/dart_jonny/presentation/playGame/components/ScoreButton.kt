@@ -23,7 +23,7 @@ fun ScoreButton(
     ) {
         Text(
             text = number,
-            fontSize = 16.sp,
+            fontSize = 34.sp,
             color = Color.White
         )
     }
