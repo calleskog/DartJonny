@@ -37,7 +37,6 @@ fun AddPlayerScreen(
                     )
                 }
                 is AddNewPlayerModel.UiEvent.SavePlayer -> {
-                    print("Added player")
                     navController.navigate(Screen.NewGameScreen.route)
                 }
             }
