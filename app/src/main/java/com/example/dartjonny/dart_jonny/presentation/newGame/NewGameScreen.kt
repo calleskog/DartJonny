@@ -1,5 +1,6 @@
 package com.example.dartjonny.dart_jonny.presentation.newGame
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -23,54 +25,66 @@ fun NewGameScreen(
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
-
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(Screen.AddPlayerScreen.route) }
-            ) {
-                Text(text = "Lägg till spelare")
-            }
-        },
-        scaffoldState = scaffoldState
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(Screen.MainScreen.route)
-                    }
+    Column() {
+        Scaffold(
+            modifier = Modifier.weight(9F).fillMaxSize(),
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = { navController.navigate(Screen.AddPlayerScreen.route) }
                 ) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-                    Text(text = "Tillbaka")
+                    Text(text = "Lägg till spelare")
                 }
-
-                Text(
-                    text = "Spelare",
-                    style = MaterialTheme.typography.h4,
-                    modifier = Modifier.padding(end = 35.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(state.players) { player ->
-                    PlayerItem(
-                        player = player,
-                        onDeleteClick = {
-                            viewModel.onEvent(NewGameEvent.DeletePlayer(player))
+            },
+            scaffoldState = scaffoldState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            navController.navigate(Screen.MainScreen.route)
                         }
+                    ) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                        Text(text = "Tillbaka")
+                    }
+
+                    Text(
+                        text = "Spelare",
+                        style = MaterialTheme.typography.h4,
+                        modifier = Modifier.padding(end = 35.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(state.players) { player ->
+                        PlayerItem(
+                            player = player,
+                            onDeleteClick = {
+                                viewModel.onEvent(NewGameEvent.DeletePlayer(player))
+                            }
+                        )
+                    }
+                }
             }
+        }
+        Button(
+            modifier = Modifier.weight(1F).fillMaxSize().background(Color.DarkGray),
+            onClick = {
+                navController.navigate(Screen.PlayGameScreen.route)
+            }
+        ) {
+            Text(text = "STARTA SPEL")
         }
     }
 }
