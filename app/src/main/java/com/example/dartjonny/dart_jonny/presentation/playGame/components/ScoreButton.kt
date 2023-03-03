@@ -18,12 +18,12 @@ fun ScoreButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .clickable { onClick }
+            .clickable(onClick = onClick)
             .then(modifier)
     ) {
         Text(
             text = number,
-            fontSize = 36.sp,
+            fontSize = 16.sp,
             color = Color.White
         )
     }
