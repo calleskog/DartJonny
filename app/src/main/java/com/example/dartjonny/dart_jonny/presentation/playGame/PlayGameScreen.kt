@@ -208,7 +208,7 @@ fun PlayGameScreen(
                         ) {
                             Icon(imageVector = Icons.Default.KeyboardBackspace,
                                 contentDescription = "Delete",
-                                modifier = Modifier.height(45.dp)
+                                modifier = Modifier.size(45.dp)
                             )
                         }
                     }
