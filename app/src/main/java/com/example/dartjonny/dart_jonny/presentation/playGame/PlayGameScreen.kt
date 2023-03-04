@@ -48,15 +48,15 @@ fun PlayGameScreen(
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playersState.players) { player ->
-                        Row(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = player.playerName)
-                            Text(text = player.points.toString())
+                            Text(text = player.playerName, fontSize = 20.sp, maxLines = 1)
+                            Text(text = player.points.toString(), fontSize = 20.sp)
                         }
                     }
                 }
@@ -123,7 +123,7 @@ fun PlayGameScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(1.dp)
                 ) {
                     Row(
