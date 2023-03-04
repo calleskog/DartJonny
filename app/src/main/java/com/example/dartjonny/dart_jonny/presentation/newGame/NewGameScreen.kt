@@ -31,11 +31,13 @@ fun NewGameScreen(
             modifier = Modifier.weight(9F).fillMaxSize(),
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { navController.navigate(Screen.AddPlayerScreen.route) }
+                    onClick = { navController.navigate(Screen.AddPlayerScreen.route) },
+
                 ) {
                     Text(text = "Lägg till spelare")
                 }
             },
+            floatingActionButtonPosition = FabPosition.Center,
             scaffoldState = scaffoldState
         ) {
             Column(

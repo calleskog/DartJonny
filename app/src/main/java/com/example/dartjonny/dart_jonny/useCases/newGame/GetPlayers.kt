@@ -10,7 +10,7 @@ class GetPlayers(
 ) {
     operator fun invoke(): Flow<List<Player>> {
         return repository.getPlayers().map { players ->
-            players.shuffled()
+            players
         }
     }
 }

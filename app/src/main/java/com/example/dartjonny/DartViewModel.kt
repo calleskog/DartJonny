@@ -3,6 +3,7 @@ package com.example.dartjonny
 import android.graphics.Color
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dartjonny.dart_jonny.model.InvalidPlayerException
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.ceil
 
 
 @HiltViewModel
@@ -64,8 +66,9 @@ class DartViewModel @Inject constructor(
                     try {
                         newGameUseCases.updatePlayerScore(
                             playerName = event.player.playerName,
-                            score = event.player.score + score.value.score.toInt()
+                            score = resolveScore(event.player.score, score.value.score.toInt(), event.target)
                         )
+                        onPlayGameEvent(PlayGameEvent.ClearScore)
                     } catch(e: InvalidPlayerException){
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -76,6 +79,26 @@ class DartViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun resolveScore(currentScore: Int, numberOfHits: Int, target: String): Int {
+        if (numberOfHits == 0) {
+            return (currentScore+2-1)/2
+        }
+
+        if (target == "D") {
+            return currentScore //TODO
+        }
+
+        if (target == "T") {
+            return currentScore //TODO
+        }
+
+        if (target == "B") {
+            return currentScore + numberOfHits * 25
+        }
+
+        return currentScore + numberOfHits * target.toInt()
     }
 
     fun onNewGameEvent(event: NewGameEvent) {
