@@ -38,7 +38,8 @@ object AppModule {
         return NewGameUseCases(
             getPlayers = GetPlayers(repository),
             deletePlayer = DeletePlayer(repository),
-            addPlayer = AddPlayer(repository)
+            addPlayer = AddPlayer(repository),
+            updatePlayerScore = UpdatePlayerScore(repository)
         )
     }
 }

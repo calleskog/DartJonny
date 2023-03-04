@@ -18,4 +18,9 @@ class PlayerRepositoryImpl(
     override suspend fun deletePlayer(player: Player) {
         return dao.deletePlayer(player)
     }
+
+    override suspend fun update(playerName: String, score: Int) {
+        return dao.update(playerName, score)
+    }
+
 }

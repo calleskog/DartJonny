@@ -59,7 +59,7 @@ class AddNewPlayerModel @Inject constructor(
         object SavePlayer: UiEvent()
     }
 
-    fun randomColor(): Int {
+    private fun randomColor(): Int {
         val rnd = Random()
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
     }

@@ -5,24 +5,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardBackspace
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
@@ -34,6 +33,22 @@ fun PlayGameScreen(
     val scoreState = playGameviewModel.score.value
     val playersState = newGameviewModel.players.value
 
+    var currentPlayerIndex by remember { mutableStateOf(0) }
+
+
+    val scaffoldState = rememberScaffoldState()
+    LaunchedEffect(key1 = true) {
+        playGameviewModel.eventFlow.collectLatest { event ->
+            when(event) {
+                is PlayGameViewModel.UiEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+            }
+        }
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
@@ -44,19 +59,28 @@ fun PlayGameScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize()
-                    .background(Color.DarkGray)
+                    .background(Color.Gray)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playersState.players) { player ->
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(16.dp)
+                                .background(if (player == playersState.players[currentPlayerIndex]) Color.DarkGray else Color.Gray),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = player.playerName, fontSize = 20.sp, maxLines = 1)
-                            Text(text = player.points.toString(), fontSize = 20.sp)
+                            Text(
+                                text = player.playerName,
+                                fontSize = 20.sp,
+                                maxLines = 1,
+                                fontWeight = (if (player == playersState.players[currentPlayerIndex]) FontWeight.Bold else FontWeight.Normal)
+                            )
+                            Text(text = player.score.toString(),
+                                fontSize = 20.sp,
+                                fontWeight = (if (player == playersState.players[currentPlayerIndex]) FontWeight.Bold else FontWeight.Normal)
+                            )
                         }
                     }
                 }
@@ -66,7 +90,7 @@ fun PlayGameScreen(
                     .weight(1f)
                     .fillMaxSize()
             ) {
-
+                Text(text = playersState.players.size.toString())
             }
         }
 
@@ -108,7 +132,12 @@ fun PlayGameScreen(
                         .weight(1f)
                         .padding(start = 3.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-                        onClick = {}
+                        onClick = {
+                            if (scoreState.score.isNotEmpty()) {
+                                playGameviewModel.onEvent(PlayGameEvent.UpdatePlayerScore(playersState.players[currentPlayerIndex]))
+                                currentPlayerIndex += 1
+                            }
+                        }
                     ) {
                         Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Next")
                     }

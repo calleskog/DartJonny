@@ -9,4 +9,6 @@ interface PlayerRepository {
     suspend fun  insertPlayer(player: Player)
 
     suspend fun deletePlayer(player: Player)
+
+    suspend fun update(playerName: String, score: Int)
 }
