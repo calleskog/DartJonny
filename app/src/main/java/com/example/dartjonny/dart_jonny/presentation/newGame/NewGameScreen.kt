@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.dartjonny.DartViewModel
 import com.example.dartjonny.Screen
 import com.example.dartjonny.dart_jonny.presentation.addPlayer.components.PlayerItem
 
@@ -21,7 +22,7 @@ import com.example.dartjonny.dart_jonny.presentation.addPlayer.components.Player
 @Composable
 fun NewGameScreen(
     navController: NavController,
-    viewModel: NewGameViewModel = hiltViewModel()
+    viewModel: DartViewModel = hiltViewModel()
 ) {
     val state = viewModel.players.value
     val scaffoldState = rememberScaffoldState()
@@ -71,7 +72,7 @@ fun NewGameScreen(
                         PlayerItem(
                             player = player,
                             onDeleteClick = {
-                                viewModel.onEvent(NewGameEvent.DeletePlayer(player))
+                                viewModel.onNewGameEvent(NewGameEvent.DeletePlayer(player))
                             }
                         )
                     }
@@ -81,6 +82,7 @@ fun NewGameScreen(
         Button(
             modifier = Modifier.weight(1F).fillMaxSize().background(Color.DarkGray),
             onClick = {
+                viewModel.onNewGameEvent(NewGameEvent.ResetScore)
                 navController.navigate(Screen.PlayGameScreen.route)
             }
         ) {

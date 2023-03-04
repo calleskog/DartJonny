@@ -6,9 +6,11 @@ import kotlinx.coroutines.flow.Flow
 interface PlayerRepository {
     fun getPlayers(): Flow<List<Player>>
 
-    suspend fun  insertPlayer(player: Player)
+    suspend fun insertPlayer(player: Player)
 
     suspend fun deletePlayer(player: Player)
 
     suspend fun update(playerName: String, score: Int)
+
+    suspend fun resetScore(score: Int = 0)
 }

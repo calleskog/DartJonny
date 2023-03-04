@@ -20,12 +20,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.dartjonny.DartViewModel
 import com.example.dartjonny.Screen
 
 @Composable
 fun OptionsScreen(
     navController: NavController,
-    viewModel: OptionsViewModel = hiltViewModel()
+    viewModel: DartViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier

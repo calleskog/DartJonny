@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.dartjonny.DartViewModel
 import com.example.dartjonny.Screen
 import kotlinx.coroutines.flow.collectLatest
 
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun AddPlayerScreen(
     navController: NavController,
-    viewModel: AddNewPlayerModel = hiltViewModel()
+    viewModel: DartViewModel = hiltViewModel()
 ) {
     val playerNameState = viewModel.playerName.value
     val scaffoldState = rememberScaffoldState()
@@ -31,12 +32,12 @@ fun AddPlayerScreen(
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when(event) {
-                is AddNewPlayerModel.UiEvent.ShowSnackbar -> {
+                is DartViewModel.UiEvent.ShowSnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
                 }
-                is AddNewPlayerModel.UiEvent.SavePlayer -> {
+                is DartViewModel.UiEvent.SavePlayer -> {
                     navController.navigate(Screen.NewGameScreen.route)
                 }
             }
@@ -70,7 +71,7 @@ fun AddPlayerScreen(
                 ) {
                     TextField(
                         value = playerNameState.playerName,
-                        onValueChange = { viewModel.onEvent(AddPlayerEvent.EnteredPlayerName(it)) },
+                        onValueChange = { viewModel.onAddPlayerEvent(AddPlayerEvent.EnteredPlayerName(it)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -82,7 +83,7 @@ fun AddPlayerScreen(
                 ) {
                     Button(
                         onClick = {
-                            viewModel.onEvent(AddPlayerEvent.SavePlayer)
+                            viewModel.onAddPlayerEvent(AddPlayerEvent.SavePlayer)
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Black,

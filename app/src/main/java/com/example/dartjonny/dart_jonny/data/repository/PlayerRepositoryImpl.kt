@@ -23,4 +23,8 @@ class PlayerRepositoryImpl(
         return dao.update(playerName, score)
     }
 
+    override suspend fun resetScore(score: Int) {
+        return dao.resetScore(score)
+    }
+
 }

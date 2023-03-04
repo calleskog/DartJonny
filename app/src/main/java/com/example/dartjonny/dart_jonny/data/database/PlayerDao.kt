@@ -18,4 +18,7 @@ interface PlayerDao {
 
     @Query("UPDATE players_db SET player_score=:score WHERE player_name=:playerName")
     suspend fun update(playerName: String, score: Int)
+
+    @Query("UPDATE players_db SET player_score=:score")
+    suspend fun resetScore(score: Int = 0)
 }
