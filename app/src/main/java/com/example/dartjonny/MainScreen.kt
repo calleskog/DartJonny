@@ -37,5 +37,14 @@ fun MainScreen(navController: NavController) {
         ) {
             Text(text = "Spel inställning")
         }
+
+        Button(
+            modifier = Modifier.padding(20.dp),
+            onClick = {
+                navController.navigate(Screen.EndOfGameScreen.route)
+            }
+        ) {
+            Text(text = "Leaderboard")
+        }
     }
 }
