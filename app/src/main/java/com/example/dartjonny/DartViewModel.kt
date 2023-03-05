@@ -35,51 +35,51 @@ class DartViewModel @Inject constructor(
     private val _playerName = mutableStateOf(PlayerNameFieldState(playerName = ""))
     val playerName: State<PlayerNameFieldState> = _playerName
 
-    private val _doubleTriple = mutableStateOf(PlayGameState(doubleTripleNumber = ""))
-    val doubleTriple: State<PlayGameState> = _doubleTriple
-
-    private val _score = mutableStateOf(PlayGameState(score = "Poäng"))
-    val score: State<PlayGameState> = _score
-
-    private val _enableButton = mutableStateOf(PlayGameState(enableButton = false))
-    val enableButton: State<PlayGameState> = _enableButton
+    private val _playGameState = mutableStateOf(PlayGameState())
+    val playGameState: State<PlayGameState> = _playGameState
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var getPlayersJob: Job? = null
 
+    val targets = listOf("19", "18", "D", "17", "41", "T", "20", "B")
+
     init {
         getPlayers()
+        _playGameState.value = playGameState.value.copy(
+            currentTarget = targets[playGameState.value.currentTargetIndex]
+        )
     }
 
     fun onPlayGameEvent(event: PlayGameEvent) {
-        when(event) {
+        when (event) {
             is PlayGameEvent.Hits -> {
-                _score.value = score.value.copy(
-                    score = event.number.toString()
-                )
-                _enableButton.value = enableButton.value.copy(
-                    enableButton = true
+                _playGameState.value = playGameState.value.copy(
+                    score = event.number.toString(),
+                    scoreButton = false,
+                    nextPlayerButton = true,
+                    doubleTripleButton = false,
                 )
             }
             is PlayGameEvent.ClearScore -> {
-                _score.value = score.value.copy(
-                    score = "Poäng"
-                )
-                _enableButton.value = enableButton.value.copy(
-                    enableButton = false
+                _playGameState.value = playGameState.value.copy(
+                    score = "",
+                    nextPlayerButton = false
                 )
             }
             is PlayGameEvent.UpdatePlayerScore -> {
                 viewModelScope.launch {
                     try {
                         newGameUseCases.updatePlayerScore(
-                            playerName = event.player.playerName,
-                            score = resolveScore(event.player.score, score.value.score.toInt(), event.target)
+                            playerName = players.value.players[playGameState.value.currentPlayerIndex].playerName,
+                            score = resolveScore(
+                                currentScore = players.value.players[playGameState.value.currentPlayerIndex].score,
+                                numberOfHits = playGameState.value.score.toInt(),
+                                target = playGameState.value.currentTarget
+                            )
                         )
-                        onPlayGameEvent(PlayGameEvent.ClearScore)
-                    } catch(e: InvalidPlayerException){
+                    } catch (e: InvalidPlayerException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
                                 message = e.message ?: "Försök igen"
@@ -89,14 +89,15 @@ class DartViewModel @Inject constructor(
                 }
             }
             is PlayGameEvent.UpdatePlayerWins -> {
+                val winningPlayer = players.value.players.maxByOrNull { it.score }!!
                 viewModelScope.launch {
                     try {
                         newGameUseCases.updatePlayerWins(
-                            playerName = event.player.playerName,
-                            wins = event.player.wins + 1
+                            playerName = winningPlayer.playerName,
+                            wins = winningPlayer.wins + 1
                         )
                         onPlayGameEvent(PlayGameEvent.ClearScore)
-                    } catch(e: InvalidPlayerException){
+                    } catch (e: InvalidPlayerException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
                                 message = e.message ?: "Försök igen"
@@ -105,12 +106,31 @@ class DartViewModel @Inject constructor(
                     }
                 }
             }
-
-
             is PlayGameEvent.EnteredDoubleTriple -> {
-                _doubleTriple.value = doubleTriple.value.copy(
-                    doubleTripleNumber = event.value
+                _playGameState.value = playGameState.value.copy(
+                    doubleTripleNumber = event.value,
+                    doubleTripleButton = true
                 )
+            }
+            is PlayGameEvent.NextPlayer -> {
+                if (playGameState.value.currentPlayerIndex < players.value.players.size - 1) {
+                    _playGameState.value = playGameState.value.copy(
+                        currentPlayerIndex = playGameState.value.currentPlayerIndex + 1,
+                        scoreButton = true,
+                        nextPlayerButton = false,
+                        doubleTripleButton = false,
+                        doubleTripleNumber = ""
+                    )
+                } else {
+                    _playGameState.value = playGameState.value.copy(
+                        currentPlayerIndex = 0,
+                        currentTargetIndex = playGameState.value.currentTargetIndex + 1,
+                        scoreButton = true,
+                        nextPlayerButton = false,
+                        doubleTripleButton = false,
+                        doubleTripleNumber = ""
+                    )
+                }
             }
         }
     }
@@ -121,11 +141,11 @@ class DartViewModel @Inject constructor(
         }
 
         if (target == "D") {
-            return currentScore + (numberOfHits * doubleTriple.value.doubleTripleNumber.toInt() * 2)
+            return currentScore + (numberOfHits * playGameState.value.doubleTripleNumber.toInt() * 2)
         }
 
         if (target == "T") {
-            return currentScore + (numberOfHits * doubleTriple.value.doubleTripleNumber.toInt() * 3)
+            return currentScore + (numberOfHits * playGameState.value.doubleTripleNumber.toInt() * 3)
         }
 
         if (target == "B") {

@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.sp
 fun ScoreButton(
     number: String,
     modifier: Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick, enabled = enabled)
             .then(modifier)
     ) {
         Text(

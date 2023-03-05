@@ -1,11 +1,10 @@
 package com.example.dartjonny.dart_jonny.presentation.playGame
 
-import com.example.dartjonny.dart_jonny.model.Player
-
 sealed class PlayGameEvent {
     data class Hits(val number: Int): PlayGameEvent()
     object ClearScore: PlayGameEvent()
-    data class UpdatePlayerScore(val player: Player, val target: String): PlayGameEvent()
-    data class UpdatePlayerWins(val player: Player): PlayGameEvent()
+    object UpdatePlayerScore: PlayGameEvent()
+    object UpdatePlayerWins: PlayGameEvent()
     data class EnteredDoubleTriple(val value: String): PlayGameEvent()
+    object NextPlayer: PlayGameEvent()
 }
