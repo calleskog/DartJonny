@@ -36,7 +36,10 @@ fun EndOfGameScreen(
                 .padding(16.dp)) {
             // header
             item {
-                Row(Modifier.background(Color.Gray)) {
+                Row(
+                    Modifier.background(Color.Gray),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     TableCell(text = "Spelare", weight = column1Weight)
                     TableCell(text = "Poäng", weight = column2Weight)
                     TableCell(text = "Antal vinster", weight = column2Weight)

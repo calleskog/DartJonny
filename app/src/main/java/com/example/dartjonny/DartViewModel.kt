@@ -43,6 +43,8 @@ class DartViewModel @Inject constructor(
 
     private var getPlayersJob: Job? = null
 
+    private var lastScore: Int = 0
+
     val targets = listOf("19", "18", "D", "17", "41", "T", "20", "B")
 
     init {
@@ -55,17 +57,13 @@ class DartViewModel @Inject constructor(
     fun onPlayGameEvent(event: PlayGameEvent) {
         when (event) {
             is PlayGameEvent.Hits -> {
+                lastScore = players.value.players[playGameState.value.currentPlayerIndex].score
                 _playGameState.value = playGameState.value.copy(
                     score = event.number.toString(),
                     scoreButton = false,
                     nextPlayerButton = true,
                     doubleTripleButton = false,
-                )
-            }
-            is PlayGameEvent.ClearScore -> {
-                _playGameState.value = playGameState.value.copy(
-                    score = "",
-                    nextPlayerButton = false
+                    restoreScoreButton = true
                 )
             }
             is PlayGameEvent.UpdatePlayerScore -> {
@@ -96,7 +94,6 @@ class DartViewModel @Inject constructor(
                             playerName = winningPlayer.playerName,
                             wins = winningPlayer.wins + 1
                         )
-                        onPlayGameEvent(PlayGameEvent.ClearScore)
                     } catch (e: InvalidPlayerException) {
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
@@ -119,16 +116,33 @@ class DartViewModel @Inject constructor(
                         scoreButton = true,
                         nextPlayerButton = false,
                         doubleTripleButton = false,
-                        doubleTripleNumber = ""
+                        doubleTripleNumber = "",
+                        restoreScoreButton = true
                     )
                 } else {
                     _playGameState.value = playGameState.value.copy(
                         currentPlayerIndex = 0,
                         currentTargetIndex = playGameState.value.currentTargetIndex + 1,
+                        currentTarget = targets[playGameState.value.currentTargetIndex + 1],
                         scoreButton = true,
                         nextPlayerButton = false,
                         doubleTripleButton = false,
-                        doubleTripleNumber = ""
+                        doubleTripleNumber = "",
+                        restoreScoreButton = true
+                    )
+                }
+            }
+            is PlayGameEvent.RestoreScore -> {
+                viewModelScope.launch {
+                    newGameUseCases.updatePlayerScore(
+                        playerName = players.value.players[playGameState.value.currentPlayerIndex].playerName,
+                        score = lastScore
+                    )
+                    _playGameState.value = playGameState.value.copy(
+                        restoreScoreButton = false,
+                        scoreButton = true,
+                        nextPlayerButton = false,
+                        doubleTripleButton = true
                     )
                 }
             }

@@ -113,8 +113,7 @@ fun PlayGameScreen(
                             if (playGameState.currentTargetIndex == viewModel.targets.size-1 && playGameState.currentPlayerIndex == playersState.players.size-1) {
                                 viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerWins)
                                 navController.navigate(Screen.EndOfGameScreen.route)
-                            }
-                            viewModel.onPlayGameEvent(PlayGameEvent.NextPlayer)
+                            } else viewModel.onPlayGameEvent(PlayGameEvent.NextPlayer)
                         }
                     ) {
                         Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Next player")
@@ -183,11 +182,30 @@ fun PlayGameScreen(
                                     .clip(RoundedCornerShape(4.dp))
                                     .border(width = 1.dp, color = Color.Black)
                             )
+
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .background(Color.Gray)
+                                    .weight(1f)
+                                    .clickable(onClick = {
+                                        viewModel.onPlayGameEvent(
+                                            PlayGameEvent.RestoreScore
+                                        )
+                                    }, enabled = playGameState.restoreScoreButton)
+                            ) {
+                                Icon(imageVector = Icons.Default.KeyboardBackspace,
+                                    contentDescription = "Restore score",
+                                    modifier = Modifier.height(45.dp)
+                                )
+                            }
                         }
                     }
                     "41" -> {
                         Column(
-                            modifier = Modifier.fillMaxSize().padding(5.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(5.dp),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -369,10 +387,14 @@ fun PlayGameScreen(
                                     modifier = Modifier
                                         .background(Color.Gray)
                                         .weight(1f)
-                                        .clickable { viewModel.onPlayGameEvent(PlayGameEvent.ClearScore) }
+                                        .clickable(onClick = {
+                                            viewModel.onPlayGameEvent(
+                                                PlayGameEvent.RestoreScore
+                                            )
+                                        }, enabled = playGameState.restoreScoreButton)
                                 ) {
                                     Icon(imageVector = Icons.Default.KeyboardBackspace,
-                                        contentDescription = "Delete",
+                                        contentDescription = "Restore score",
                                         modifier = Modifier.height(45.dp)
                                     )
                                 }
