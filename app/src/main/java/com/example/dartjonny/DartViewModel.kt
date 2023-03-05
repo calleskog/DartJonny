@@ -113,6 +113,10 @@ class DartViewModel @Inject constructor(
             return currentScore + numberOfHits * 25
         }
 
+        if (target == "41") {
+            return currentScore + 41
+        }
+
         return currentScore + numberOfHits * target.toInt()
     }
 

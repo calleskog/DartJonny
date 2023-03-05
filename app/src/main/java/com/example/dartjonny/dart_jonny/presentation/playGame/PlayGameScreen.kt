@@ -141,7 +141,82 @@ fun PlayGameScreen(
                 .background(Color.Gray)
                 .padding(top = 5.dp)
             ) {
-                if (targets[targetIndex] !in listOf("D", "T")){
+                if (targets[targetIndex] in listOf("D", "T")){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            ScoreButton(
+                                number = "1",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
+                            )
+                            ScoreButton(
+                                number = "2",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(2)) }
+                            )
+                            ScoreButton(
+                                number = "3",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(3)) }
+                            )
+                        }
+
+                        TextField(
+                            value = doubleTripleScoreState.doubleTripleNumber,
+                            onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredDoubleTriple(it))},
+                            textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                            modifier = Modifier
+                                .size(width = 70.dp, height = 70.dp)
+                                .clip(RoundedCornerShape(4.dp))
+                                .border(width = 1.dp, color = Color.Black)
+                        )
+                    }
+                }
+
+                else if (targets[targetIndex] == "41") {
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(5.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "Fick du 41 poäng på tre pilar?")
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            ScoreButton(
+                                number = "JAPP",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
+                            )
+                            ScoreButton(
+                                number = "NOPE",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(0)) }
+                            )
+                        }
+                    }
+                }
+                else {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -257,51 +332,6 @@ fun PlayGameScreen(
                                 )
                             }
                         }
-                    }
-
-                }
-                else {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth().padding(10.dp),
-                            horizontalArrangement = Arrangement.spacedBy(1.dp)
-                        ) {
-                            ScoreButton(
-                                number = "1",
-                                modifier = Modifier
-                                    .background(Color.DarkGray)
-                                    .weight(1f),
-                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
-                            )
-                            ScoreButton(
-                                number = "2",
-                                modifier = Modifier
-                                    .background(Color.DarkGray)
-                                    .weight(1f),
-                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(2)) }
-                            )
-                            ScoreButton(
-                                number = "3",
-                                modifier = Modifier
-                                    .background(Color.DarkGray)
-                                    .weight(1f),
-                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(3)) }
-                            )
-                        }
-
-                        TextField(
-                            value = doubleTripleScoreState.doubleTripleNumber,
-                            onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredDoubleTriple(it))},
-                            textStyle = TextStyle.Default.copy(fontSize = 28.sp),
-                            modifier = Modifier
-                                .size(width = 70.dp, height = 70.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                                .border(width = 1.dp, color = Color.Black)
-                        )
-
                     }
                 }
             }
