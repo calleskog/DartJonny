@@ -88,6 +88,25 @@ class DartViewModel @Inject constructor(
                     }
                 }
             }
+            is PlayGameEvent.UpdatePlayerWins -> {
+                viewModelScope.launch {
+                    try {
+                        newGameUseCases.updatePlayerWins(
+                            playerName = event.player.playerName,
+                            wins = event.player.wins + 1
+                        )
+                        onPlayGameEvent(PlayGameEvent.ClearScore)
+                    } catch(e: InvalidPlayerException){
+                        _eventFlow.emit(
+                            UiEvent.ShowSnackbar(
+                                message = e.message ?: "Försök igen"
+                            )
+                        )
+                    }
+                }
+            }
+
+
             is PlayGameEvent.EnteredDoubleTriple -> {
                 _doubleTriple.value = doubleTriple.value.copy(
                     doubleTripleNumber = event.value

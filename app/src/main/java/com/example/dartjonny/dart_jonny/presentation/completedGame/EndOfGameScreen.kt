@@ -42,12 +42,14 @@ fun EndOfGameScreen(
                     TableCell(text = "Antal vinster", weight = column2Weight)
                 }
             }
-            // rows.
-            items(playersState.players) { player ->
+
+            val sortedPlayers = playersState.players.sortedByDescending { it.score }
+            // rows
+            items(sortedPlayers) { player ->
                 Row(Modifier.fillMaxWidth()) {
                     TableCell(text = player.playerName, weight = column1Weight)
                     TableCell(text = player.score.toString(), weight = column2Weight)
-                    TableCell(text = player.score.toString(), weight = column3Weight)
+                    TableCell(text = player.wins.toString(), weight = column3Weight)
                 }
             }
         }

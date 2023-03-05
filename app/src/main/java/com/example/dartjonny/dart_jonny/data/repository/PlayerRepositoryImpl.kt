@@ -27,4 +27,8 @@ class PlayerRepositoryImpl(
         return dao.resetScore(score)
     }
 
+    override suspend fun updateWins(playerName: String, wins: Int) {
+        return dao.updateWins(playerName, wins)
+    }
+
 }

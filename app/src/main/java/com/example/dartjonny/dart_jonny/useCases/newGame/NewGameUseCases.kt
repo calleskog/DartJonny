@@ -5,5 +5,6 @@ data class NewGameUseCases(
     val deletePlayer: DeletePlayer,
     val addPlayer: AddPlayer,
     val updatePlayerScore: UpdatePlayerScore,
-    val resetPlayersScore: ResetPlayersScore
+    val resetPlayersScore: ResetPlayersScore,
+    val updatePlayerWins: UpdatePlayerWins
 )

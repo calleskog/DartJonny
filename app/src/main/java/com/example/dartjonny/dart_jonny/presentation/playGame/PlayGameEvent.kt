@@ -6,5 +6,6 @@ sealed class PlayGameEvent {
     data class Hits(val number: Int): PlayGameEvent()
     object ClearScore: PlayGameEvent()
     data class UpdatePlayerScore(val player: Player, val target: String): PlayGameEvent()
+    data class UpdatePlayerWins(val player: Player): PlayGameEvent()
     data class EnteredDoubleTriple(val value: String): PlayGameEvent()
 }

@@ -125,7 +125,9 @@ fun PlayGameScreen(
                                 targetIndex += 1
                             }
 
-                            if (targetIndex >= targets.size-1) {
+                            if (targetIndex == targets.size-1 && currentPlayerIndex == playersState.players.size-1) {
+                                val sortedPlayers = playersState.players.sortedByDescending { it.score }
+                                viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerWins(sortedPlayers.first()))
                                 navController.navigate(Screen.EndOfGameScreen.route)
                             }
                         }

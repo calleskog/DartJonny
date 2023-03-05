@@ -10,7 +10,7 @@ interface PlayerDao {
     @Query("SELECT * FROM players_db")
     fun getPlayers(): Flow<List<Player>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE )
+    @Insert(onConflict = OnConflictStrategy.ABORT )
     suspend fun insertPlayer(player: Player)
 
     @Delete
@@ -21,4 +21,7 @@ interface PlayerDao {
 
     @Query("UPDATE players_db SET player_score=:score")
     suspend fun resetScore(score: Int = 0)
+
+    @Query("UPDATE players_db SET player_wins=:wins WHERE player_name=:playerName")
+    suspend fun updateWins(playerName: String, wins: Int = 0)
 }
