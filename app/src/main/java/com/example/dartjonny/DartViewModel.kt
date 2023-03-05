@@ -3,7 +3,6 @@ package com.example.dartjonny
 import android.graphics.Color
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dartjonny.dart_jonny.model.InvalidPlayerException
@@ -14,6 +13,7 @@ import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameEvent
 import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameState
 import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameEvent
 import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameState
+import com.example.dartjonny.dart_jonny.presentation.playGame.components.DoubleTripleFieldState
 import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.ceil
 
 
 @HiltViewModel
@@ -36,6 +35,9 @@ class DartViewModel @Inject constructor(
 
     private val _playerName = mutableStateOf(PlayerNameFieldState(playerName = ""))
     val playerName: State<PlayerNameFieldState> = _playerName
+
+    private val _doubleTriple = mutableStateOf(DoubleTripleFieldState(hits = ""))
+    val doubleTriple: State<DoubleTripleFieldState> = _doubleTriple
 
     private val _score = mutableStateOf(PlayGameState(score = "Poäng"))
     val score: State<PlayGameState> = _score
@@ -77,6 +79,11 @@ class DartViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+            is PlayGameEvent.EnteredDoubleTriple -> {
+                _doubleTriple.value = doubleTriple.value.copy(
+                    hits = event.value
+                )
             }
         }
     }

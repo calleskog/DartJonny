@@ -2,20 +2,21 @@ package com.example.dartjonny.dart_jonny.presentation.playGame
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +35,7 @@ fun PlayGameScreen(
 ) {
     val scoreState = viewModel.score.value
     val playersState = viewModel.players.value
+    val doubleTripleScoreState = viewModel.doubleTriple.value
 
     var currentPlayerIndex by remember { mutableStateOf(0) }
     var targetIndex by remember { mutableStateOf(0) }
@@ -137,120 +139,167 @@ fun PlayGameScreen(
                 .background(Color.Gray)
                 .padding(top = 5.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(1.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(1.dp)
+                if (targets[targetIndex] !in listOf("D", "T")){
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(1.dp)
                     ) {
-                        ScoreButton(
-                            number = "1",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
-                        )
-                        ScoreButton(
-                            number = "2",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(2)) }
-                        )
-                        ScoreButton(
-                            number = "3",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(3)) }
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(1.dp)
-                    ) {
-                        ScoreButton(
-                            number = "4",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(4)) }
-                        )
-                        ScoreButton(
-                            number = "5",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(5)) }
-                        )
-                        ScoreButton(
-                            number = "6",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(6)) }
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(1.dp)
-                    ) {
-                        ScoreButton(
-                            number = "7",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(7)) }
-                        )
-                        ScoreButton(
-                            number = "8",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(8)) }
-                        )
-                        ScoreButton(
-                            number = "9",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(9)) }
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(1.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .background(Color.Gray)
-                                .weight(1f)
-                        )
-                        ScoreButton(
-                            number = "0",
-                            modifier = Modifier
-                                .background(Color.DarkGray)
-                                .weight(1f),
-                            onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(0)) }
-                        )
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .background(Color.Gray)
-                                .weight(1f)
-                                .clickable { viewModel.onPlayGameEvent(PlayGameEvent.ClearScore) }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
                         ) {
-                            Icon(imageVector = Icons.Default.KeyboardBackspace,
-                                contentDescription = "Delete",
-                                modifier = Modifier.height(45.dp)
+                            ScoreButton(
+                                number = "1",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
+                            )
+                            ScoreButton(
+                                number = "2",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(2)) }
+                            )
+                            ScoreButton(
+                                number = "3",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(3)) }
                             )
                         }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            ScoreButton(
+                                number = "4",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(4)) }
+                            )
+                            ScoreButton(
+                                number = "5",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(5)) }
+                            )
+                            ScoreButton(
+                                number = "6",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(6)) }
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            ScoreButton(
+                                number = "7",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(7)) }
+                            )
+                            ScoreButton(
+                                number = "8",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(8)) }
+                            )
+                            ScoreButton(
+                                number = "9",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(9)) }
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .background(Color.Gray)
+                                    .weight(1f)
+                            )
+                            ScoreButton(
+                                number = "0",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(0)) }
+                            )
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .background(Color.Gray)
+                                    .weight(1f)
+                                    .clickable { viewModel.onPlayGameEvent(PlayGameEvent.ClearScore) }
+                            ) {
+                                Icon(imageVector = Icons.Default.KeyboardBackspace,
+                                    contentDescription = "Delete",
+                                    modifier = Modifier.height(45.dp)
+                                )
+                            }
+                        }
+                    }
+
+                }
+                else {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth().padding(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(1.dp)
+                        ) {
+                            ScoreButton(
+                                number = "1",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(1)) }
+                            )
+                            ScoreButton(
+                                number = "2",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(2)) }
+                            )
+                            ScoreButton(
+                                number = "3",
+                                modifier = Modifier
+                                    .background(Color.DarkGray)
+                                    .weight(1f),
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.Hits(3)) }
+                            )
+                        }
+
+                        TextField(
+                            value = doubleTripleScoreState.hits,
+                            onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredDoubleTriple(it))},
+                            textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                            modifier = Modifier
+                                .size(width = 70.dp, height = 70.dp)
+                                .clip(RoundedCornerShape(4.dp))
+                                .border(width = 1.dp, color = Color.Black)
+                        )
+
                     }
                 }
             }
