@@ -13,7 +13,6 @@ import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameEvent
 import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameState
 import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameEvent
 import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameState
-import com.example.dartjonny.dart_jonny.presentation.playGame.components.DoubleTripleFieldState
 import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -36,11 +35,14 @@ class DartViewModel @Inject constructor(
     private val _playerName = mutableStateOf(PlayerNameFieldState(playerName = ""))
     val playerName: State<PlayerNameFieldState> = _playerName
 
-    private val _doubleTriple = mutableStateOf(DoubleTripleFieldState(hits = ""))
-    val doubleTriple: State<DoubleTripleFieldState> = _doubleTriple
+    private val _doubleTriple = mutableStateOf(PlayGameState(doubleTripleNumber = ""))
+    val doubleTriple: State<PlayGameState> = _doubleTriple
 
     private val _score = mutableStateOf(PlayGameState(score = "Poäng"))
     val score: State<PlayGameState> = _score
+
+    private val _enableButton = mutableStateOf(PlayGameState(enableButton = false))
+    val enableButton: State<PlayGameState> = _enableButton
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -57,10 +59,16 @@ class DartViewModel @Inject constructor(
                 _score.value = score.value.copy(
                     score = event.number.toString()
                 )
+                _enableButton.value = enableButton.value.copy(
+                    enableButton = true
+                )
             }
             is PlayGameEvent.ClearScore -> {
                 _score.value = score.value.copy(
                     score = "Poäng"
+                )
+                _enableButton.value = enableButton.value.copy(
+                    enableButton = false
                 )
             }
             is PlayGameEvent.UpdatePlayerScore -> {
@@ -82,7 +90,7 @@ class DartViewModel @Inject constructor(
             }
             is PlayGameEvent.EnteredDoubleTriple -> {
                 _doubleTriple.value = doubleTriple.value.copy(
-                    hits = event.value
+                    doubleTripleNumber = event.value
                 )
             }
         }
@@ -94,11 +102,11 @@ class DartViewModel @Inject constructor(
         }
 
         if (target == "D") {
-            return currentScore //TODO
+            return currentScore + (numberOfHits * doubleTriple.value.doubleTripleNumber.toInt() * 2)
         }
 
         if (target == "T") {
-            return currentScore //TODO
+            return currentScore + (numberOfHits * doubleTriple.value.doubleTripleNumber.toInt() * 3)
         }
 
         if (target == "B") {

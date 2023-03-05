@@ -36,6 +36,7 @@ fun PlayGameScreen(
     val scoreState = viewModel.score.value
     val playersState = viewModel.players.value
     val doubleTripleScoreState = viewModel.doubleTriple.value
+    val enableButtonState = viewModel.enableButton.value
 
     var currentPlayerIndex by remember { mutableStateOf(0) }
     var targetIndex by remember { mutableStateOf(0) }
@@ -113,16 +114,17 @@ fun PlayGameScreen(
                         .weight(1f)
                         .padding(start = 3.dp),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
+                        enabled = enableButtonState.enableButton,
                         onClick = {
-                            if (scoreState.score != "Poäng") {
-                                viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore(playersState.players[currentPlayerIndex], targets[targetIndex]))
-                                if (currentPlayerIndex < playersState.players.size-1) {
-                                    currentPlayerIndex += 1
-                                } else {
-                                    currentPlayerIndex = 0
-                                    targetIndex += 1
-                                }
+                            viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore(playersState.players[currentPlayerIndex], targets[targetIndex]))
+
+                            if (currentPlayerIndex < playersState.players.size-1) {
+                                currentPlayerIndex += 1
+                            } else {
+                                currentPlayerIndex = 0
+                                targetIndex += 1
                             }
+
                             if (targetIndex >= targets.size-1) {
                                 navController.navigate(Screen.NewGameScreen.route)
                             }
@@ -291,7 +293,7 @@ fun PlayGameScreen(
                         }
 
                         TextField(
-                            value = doubleTripleScoreState.hits,
+                            value = doubleTripleScoreState.doubleTripleNumber,
                             onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredDoubleTriple(it))},
                             textStyle = TextStyle.Default.copy(fontSize = 28.sp),
                             modifier = Modifier
