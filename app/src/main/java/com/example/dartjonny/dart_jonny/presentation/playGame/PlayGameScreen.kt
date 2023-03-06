@@ -139,6 +139,16 @@ fun PlayGameScreen(
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 ScoreButton(
+                                    number = "0",
+                                    modifier = Modifier
+                                        .background(Color.DarkGray)
+                                        .weight(1f),
+                                    onClick = {
+                                        viewModel.onPlayGameEvent(PlayGameEvent.Hits(0))
+                                        viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
+                                    }
+                                )
+                                ScoreButton(
                                     number = "1",
                                     modifier = Modifier
                                         .background(Color.DarkGray)
