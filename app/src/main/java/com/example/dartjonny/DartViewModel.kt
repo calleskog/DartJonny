@@ -1,6 +1,5 @@
 package com.example.dartjonny
 
-import android.graphics.Color
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,13 +15,10 @@ import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameState
 import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
+import kotlin.random.Random
 
 
 @HiltViewModel
@@ -46,6 +42,24 @@ class DartViewModel @Inject constructor(
     private var lastScore: Int = 0
 
     val targets = listOf("19", "18", "D", "17", "41", "T", "20", "B")
+
+    private val _uiState = MutableStateFlow<List<Section>>(listOf())
+    val uiState = _uiState.asStateFlow()
+
+    fun swapSections(from: Int, to: Int) {
+        val fromItem = _uiState.value[from]
+        val toItem = _uiState.value[to]
+        val newList = _uiState.value.toMutableList()
+        newList[from] = toItem
+        newList[to] = fromItem
+
+        _uiState.value = newList
+    }
+
+    fun sectionClicked(item: Section) {
+        println("Clicked $item")
+    }
+
 
     init {
         getPlayers()
@@ -200,8 +214,7 @@ class DartViewModel @Inject constructor(
                     try {
                         newGameUseCases.addPlayer(
                             Player(
-                                playerName = playerName.value.playerName,
-                                color = randomColor()
+                                playerName = playerName.value.playerName
                             )
                         )
                         _eventFlow.emit(UiEvent.SavePlayer)
@@ -224,6 +237,7 @@ class DartViewModel @Inject constructor(
                 _players.value = this.players.value.copy(
                     players = players
                 )
+                _uiState.value = this.players.value.players.map { Section(name = it.playerName) }
             }
             .launchIn(viewModelScope)
     }
@@ -232,9 +246,15 @@ class DartViewModel @Inject constructor(
         data class ShowSnackbar(val message: String): UiEvent()
         object SavePlayer: UiEvent()
     }
+}
 
-    private fun randomColor(): Int {
-        val rnd = Random()
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+data class Section(
+    val id: Int = internalId++,
+    val name: String = "",
+    val description: String = "",
+    val color: Long = Random(id).nextLong()
+) {
+    companion object {
+        private var internalId = 0
     }
 }

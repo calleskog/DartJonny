@@ -13,9 +13,6 @@ data class Player(
     @ColumnInfo(name = "player_score")
     val score: Int = 0,
 
-    @ColumnInfo(name = "player_color")
-    val color: Int,
-
     @ColumnInfo(name = "player_wins")
     val wins: Int = 0,
 
