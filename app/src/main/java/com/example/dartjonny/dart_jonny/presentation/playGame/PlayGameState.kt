@@ -14,5 +14,5 @@ data class PlayGameState(
     val currentTarget: String = "",
     val currentTargetIndex: Int = 0,
 
-    val restoreScoreButton: Boolean = true
+    val restoreScoreButton: Boolean = false
 )

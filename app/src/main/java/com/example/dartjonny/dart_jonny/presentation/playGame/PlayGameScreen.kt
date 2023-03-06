@@ -234,7 +234,8 @@ fun PlayGameScreen(
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(1))
                                         viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
-                                    }
+                                    },
+                                    enabled = playGameState.scoreButton
                                 )
                                 ScoreButton(
                                     number = "NOPE",
@@ -244,7 +245,24 @@ fun PlayGameScreen(
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(0))
                                         viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
-                                    }
+                                    },
+                                    enabled = playGameState.scoreButton
+                                )
+                            }
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .background(Color.Gray)
+                                    .weight(1f)
+                                    .clickable(onClick = {
+                                        viewModel.onPlayGameEvent(
+                                            PlayGameEvent.RestoreScore
+                                        )
+                                    }, enabled = playGameState.restoreScoreButton)
+                            ) {
+                                Icon(imageVector = Icons.Default.KeyboardBackspace,
+                                    contentDescription = "Restore score",
+                                    modifier = Modifier.height(45.dp)
                                 )
                             }
                         }
