@@ -117,7 +117,7 @@ class DartViewModel @Inject constructor(
                         nextPlayerButton = false,
                         doubleTripleButton = false,
                         doubleTripleNumber = "",
-                        restoreScoreButton = true
+                        restoreScoreButton = false
                     )
                 } else {
                     _playGameState.value = playGameState.value.copy(
@@ -128,7 +128,7 @@ class DartViewModel @Inject constructor(
                         nextPlayerButton = false,
                         doubleTripleButton = false,
                         doubleTripleNumber = "",
-                        restoreScoreButton = true
+                        restoreScoreButton = false
                     )
                 }
             }
