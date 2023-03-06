@@ -54,6 +54,7 @@ fun PlayGameScreen(
                             player = player,
                             currentPlayer = player == playersState.players[playGameState.currentPlayerIndex]
                         )
+                        Text(text = player.orderId.toString())
                     }
                 }
             }

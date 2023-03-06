@@ -93,6 +93,8 @@ fun NewGameScreen(
                         )
                     }
                 }
+                Text(text = viewModel.players.toString())
+                Text(text = uiState.value.toString())
             }
         }
         Button(
@@ -102,6 +104,7 @@ fun NewGameScreen(
                 .background(Color.DarkGray),
             onClick = {
                 viewModel.onNewGameEvent(NewGameEvent.ResetScore)
+                uiState.value.mapIndexed { index, player -> viewModel.onNewGameEvent(NewGameEvent.UpdatePlayerOrder(player.name, index)) }
                 navController.navigate(Screen.PlayGameScreen.route)
             }
         ) {

@@ -41,7 +41,8 @@ object AppModule {
             addPlayer = AddPlayer(repository),
             updatePlayerScore = UpdatePlayerScore(repository),
             resetPlayersScore = ResetPlayersScore(repository),
-            updatePlayerWins = UpdatePlayerWins(repository)
+            updatePlayerWins = UpdatePlayerWins(repository),
+            updatePlayerOrder = UpdatePlayerOrder(repository)
         )
     }
 }

@@ -16,12 +16,15 @@ interface PlayerDao {
     @Delete
     suspend fun deletePlayer(player: Player)
 
-    @Query("UPDATE players_db SET player_score=:score WHERE player_name=:playerName")
+    @Query("UPDATE players_db SET score=:score WHERE player_name=:playerName")
     suspend fun update(playerName: String, score: Int)
 
-    @Query("UPDATE players_db SET player_score=:score")
+    @Query("UPDATE players_db SET score=:score")
     suspend fun resetScore(score: Int = 0)
 
-    @Query("UPDATE players_db SET player_wins=:wins WHERE player_name=:playerName")
+    @Query("UPDATE players_db SET wins=:wins WHERE player_name=:playerName")
     suspend fun updateWins(playerName: String, wins: Int = 0)
+
+    @Query("UPDATE players_db SET order_id=:orderId WHERE player_name=:playerName")
+    suspend fun updatePlayerOrder(playerName: String, orderId: Int = 0)
 }

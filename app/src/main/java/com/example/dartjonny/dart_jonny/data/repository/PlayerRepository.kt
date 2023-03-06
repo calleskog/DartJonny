@@ -15,4 +15,6 @@ interface PlayerRepository {
     suspend fun resetScore(score: Int = 0)
 
     suspend fun updateWins(playerName: String, wins: Int = 0)
+
+    suspend fun updatePlayerOrder(playerName: String, orderId: Int = 0)
 }

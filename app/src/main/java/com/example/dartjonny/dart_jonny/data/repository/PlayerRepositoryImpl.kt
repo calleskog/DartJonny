@@ -31,4 +31,7 @@ class PlayerRepositoryImpl(
         return dao.updateWins(playerName, wins)
     }
 
+    override suspend fun updatePlayerOrder(playerName: String, orderId: Int) {
+        return dao.updatePlayerOrder(playerName, orderId)
+    }
 }

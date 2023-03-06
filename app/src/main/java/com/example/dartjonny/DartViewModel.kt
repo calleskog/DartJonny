@@ -199,6 +199,11 @@ class DartViewModel @Inject constructor(
                     newGameUseCases.resetPlayersScore()
                 }
             }
+            is NewGameEvent.UpdatePlayerOrder -> {
+                viewModelScope.launch {
+                    newGameUseCases.updatePlayerOrder(playerName = event.playerName, orderId = event.orderId)
+                }
+            }
         }
     }
 
@@ -230,7 +235,7 @@ class DartViewModel @Inject constructor(
         }
     }
 
-    private fun getPlayers() {
+    fun getPlayers() {
         getPlayersJob?.cancel()
         getPlayersJob = newGameUseCases.getPlayers()
             .onEach { players ->

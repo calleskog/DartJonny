@@ -10,11 +10,14 @@ data class Player(
     @ColumnInfo(name = "player_name")
     val playerName: String,
 
-    @ColumnInfo(name = "player_score")
+    @ColumnInfo(name = "score")
     val score: Int = 0,
 
-    @ColumnInfo(name = "player_wins")
+    @ColumnInfo(name = "wins")
     val wins: Int = 0,
+
+    @ColumnInfo(name = "order_id")
+    val orderId: Int = 0,
 
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null
