@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
 
 @HiltViewModel
@@ -254,16 +253,5 @@ class DartViewModel @Inject constructor(
     sealed class UiEvent {
         data class ShowSnackbar(val message: String): UiEvent()
         object SavePlayer: UiEvent()
-    }
-}
-
-data class Section(
-    val id: Int = internalId++,
-    val name: String = "",
-    val description: String = "",
-    val color: Long = Random(id).nextLong()
-) {
-    companion object {
-        private var internalId = 0
     }
 }
