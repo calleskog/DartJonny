@@ -6,9 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,9 +25,8 @@ fun NewGameScreen(
     navController: NavController,
     viewModel: DartViewModel = hiltViewModel()
 ) {
-    val state = viewModel.players.value
+    val playersState = viewModel.players.value
     val scaffoldState = rememberScaffoldState()
-    val uiState = viewModel.uiState.collectAsState()
 
     Column() {
         Scaffold(
@@ -76,25 +74,32 @@ fun NewGameScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 DragDropColumn(
-                    items = uiState.value,
+                    items = playersState.players,
                     onSwap = viewModel::swapSections
-                ) { item ->
+                ) { player ->
                     Card(
                         modifier = Modifier
-                            .clickable { viewModel.sectionClicked(item) },
+                            .clickable { },
                     ) {
-                        Text(
-                            text = item.name +"  " + item.id,
-                            color = MaterialTheme.colors.onSurface,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color(item.color))
-                                .padding(16.dp),
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth().background(Color.Gray),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = player.playerName.uppercase(),
+                                color = MaterialTheme.colors.onSurface,
+                                modifier = Modifier
+                                    .padding(16.dp),
+                            )
+                            IconButton(
+                                onClick = { viewModel.onNewGameEvent(NewGameEvent.DeletePlayer(player)) },
+                            ) {
+                                Icon(imageVector = Icons.Filled.PersonRemove, contentDescription = "Delete", tint = Color.Black)
+                            }
+                        }
                     }
                 }
-                Text(text = viewModel.players.toString())
-                Text(text = uiState.value.toString())
             }
         }
         Button(
@@ -104,7 +109,7 @@ fun NewGameScreen(
                 .background(Color.DarkGray),
             onClick = {
                 viewModel.onNewGameEvent(NewGameEvent.ResetScore)
-                uiState.value.mapIndexed { index, player -> viewModel.onNewGameEvent(NewGameEvent.UpdatePlayerOrder(player.name, index)) }
+                playersState.players.mapIndexed { index, player -> viewModel.onNewGameEvent(NewGameEvent.UpdatePlayerOrder(player.playerName, index)) }
                 navController.navigate(Screen.PlayGameScreen.route)
             }
         ) {

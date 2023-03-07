@@ -15,7 +15,10 @@ import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameState
 import com.example.dartjonny.dart_jonny.useCases.newGame.NewGameUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
@@ -43,29 +46,21 @@ class DartViewModel @Inject constructor(
 
     val targets = listOf("19", "18", "D", "17", "41", "T", "20", "B")
 
-    private val _uiState = MutableStateFlow<List<Section>>(listOf())
-    val uiState = _uiState.asStateFlow()
-
-    fun swapSections(from: Int, to: Int) {
-        val fromItem = _uiState.value[from]
-        val toItem = _uiState.value[to]
-        val newList = _uiState.value.toMutableList()
-        newList[from] = toItem
-        newList[to] = fromItem
-
-        _uiState.value = newList
-    }
-
-    fun sectionClicked(item: Section) {
-        println("Clicked $item")
-    }
-
-
     init {
         getPlayers()
         _playGameState.value = playGameState.value.copy(
             currentTarget = targets[playGameState.value.currentTargetIndex]
         )
+    }
+
+    fun swapSections(from: Int, to: Int) {
+        val fromItem = _players.value.players[from]
+        val toItem = _players.value.players[to]
+        val newList = _players.value.players.toMutableList()
+        newList[from] = toItem
+        newList[to] = fromItem
+
+        _players.value = this.players.value.copy(players = newList)
     }
 
     fun onPlayGameEvent(event: PlayGameEvent) {
@@ -152,12 +147,22 @@ class DartViewModel @Inject constructor(
                         playerName = players.value.players[playGameState.value.currentPlayerIndex].playerName,
                         score = lastScore
                     )
-                    _playGameState.value = playGameState.value.copy(
-                        restoreScoreButton = false,
-                        scoreButton = true,
-                        nextPlayerButton = false,
-                        doubleTripleButton = true
-                    )
+                    if (playGameState.value.currentTarget in listOf("D", "T")) {
+                        _playGameState.value = playGameState.value.copy(
+                            scoreButton = true,
+                            restoreScoreButton = false,
+                            doubleTripleButton = false,
+                            nextPlayerButton = false
+                        )
+                    }
+                    else {
+                        _playGameState.value = playGameState.value.copy(
+                            restoreScoreButton = false,
+                            scoreButton = true,
+                            nextPlayerButton = false,
+                            doubleTripleButton = true
+                        )
+                    }
                 }
             }
         }
@@ -242,7 +247,6 @@ class DartViewModel @Inject constructor(
                 _players.value = this.players.value.copy(
                     players = players
                 )
-                _uiState.value = this.players.value.players.map { Section(name = it.playerName) }
             }
             .launchIn(viewModelScope)
     }

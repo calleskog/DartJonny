@@ -50,7 +50,7 @@ fun EndOfGameScreen(
             // rows
             items(sortedPlayers) { player ->
                 Row(Modifier.fillMaxWidth()) {
-                    TableCell(text = player.playerName, weight = column1Weight)
+                    TableCell(text = player.playerName.uppercase(), weight = column1Weight)
                     TableCell(text = player.score.toString(), weight = column2Weight)
                     TableCell(text = player.wins.toString(), weight = column3Weight)
                 }

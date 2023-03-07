@@ -26,8 +26,8 @@ fun Leaderboard(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = player.playerName,
-            fontSize = 20.sp,
+            text = player.playerName.uppercase(),
+            fontSize = (if (currentPlayer) 25.sp else 17.sp),
             maxLines = 1,
             fontWeight = (if (currentPlayer) FontWeight.Bold else FontWeight.Normal)
         )

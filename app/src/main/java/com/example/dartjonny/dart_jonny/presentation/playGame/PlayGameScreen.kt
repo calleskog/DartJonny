@@ -54,7 +54,6 @@ fun PlayGameScreen(
                             player = player,
                             currentPlayer = player == playersState.players[playGameState.currentPlayerIndex]
                         )
-                        Text(text = player.orderId.toString())
                     }
                 }
             }
@@ -147,7 +146,8 @@ fun PlayGameScreen(
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(0))
                                         viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
-                                    }
+                                    },
+                                    enabled = playGameState.scoreButton
                                 )
                                 ScoreButton(
                                     number = "1",
@@ -271,7 +271,7 @@ fun PlayGameScreen(
                     else -> {
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth(),
+                                .fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(1.dp)
                         ) {
                             Row(
