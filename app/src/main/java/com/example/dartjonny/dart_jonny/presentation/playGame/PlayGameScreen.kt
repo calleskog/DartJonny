@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -424,7 +426,9 @@ fun PlayGameScreen(
                             TextField(
                                 value = playGameState.doubleTripleOneHit,
                                 onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
-                                textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
+                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                singleLine = true,
                                 modifier = Modifier
                                     .size(width = 70.dp, height = 70.dp)
                                     .clip(RoundedCornerShape(4.dp))
@@ -443,7 +447,8 @@ fun PlayGameScreen(
                                 TextField(
                                     value = playGameState.doubleTripleOneHit,
                                     onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
-                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier = Modifier
                                         .size(width = 70.dp, height = 70.dp)
                                         .clip(RoundedCornerShape(4.dp))
@@ -452,7 +457,8 @@ fun PlayGameScreen(
                                 TextField(
                                     value = playGameState.doubleTripleTwoHit,
                                     onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredTwoDoubleTriple(it))},
-                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
                                     modifier = Modifier
                                         .size(width = 70.dp, height = 70.dp)
                                         .clip(RoundedCornerShape(4.dp))
@@ -472,7 +478,8 @@ fun PlayGameScreen(
                                 TextField(
                                     value = playGameState.doubleTripleOneHit,
                                     onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
-                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier = Modifier
                                         .size(width = 70.dp, height = 70.dp)
                                         .clip(RoundedCornerShape(4.dp))
@@ -481,7 +488,8 @@ fun PlayGameScreen(
                                 TextField(
                                     value = playGameState.doubleTripleTwoHit,
                                     onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredTwoDoubleTriple(it))},
-                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier = Modifier
                                         .size(width = 70.dp, height = 70.dp)
                                         .clip(RoundedCornerShape(4.dp))
@@ -490,7 +498,8 @@ fun PlayGameScreen(
                                 TextField(
                                     value = playGameState.doubleTripleThreeHit,
                                     onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredThreeDoubleTriple(it))},
-                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.White),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                     modifier = Modifier
                                         .size(width = 70.dp, height = 70.dp)
                                         .clip(RoundedCornerShape(4.dp))
