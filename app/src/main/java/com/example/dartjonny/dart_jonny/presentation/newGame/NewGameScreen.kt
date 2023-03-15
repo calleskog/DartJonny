@@ -41,10 +41,10 @@ fun NewGameScreen(
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = { navController.navigate(Screen.AddPlayerScreen.route) },
-                    backgroundColor = Color(255, 85, 0),
+                    backgroundColor = Color.DarkGray,
                     modifier = Modifier.clip(CircleShape).border(1.dp, Color.Black, shape = CircleShape)
                 ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add player")
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add player", tint = Color.White,)
                 }
             },
             floatingActionButtonPosition = FabPosition.Center,
@@ -69,7 +69,8 @@ fun NewGameScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = Color.Black
                         )
                     }
 
@@ -113,7 +114,7 @@ fun NewGameScreen(
             modifier = Modifier
                 .weight(1F)
                 .fillMaxSize()
-                .background(Color(40,40,40))
+                .background(Color(255, 85, 0))
                 .clickable(
                     onClick = {
                         viewModel.onNewGameEvent(NewGameEvent.ResetScore)

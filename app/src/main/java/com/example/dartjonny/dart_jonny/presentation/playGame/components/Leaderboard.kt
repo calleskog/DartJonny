@@ -28,14 +28,14 @@ fun Leaderboard(
     ) {
         Text(
             text = player.playerName.uppercase(),
-            color = if (currentPlayer) Color.Black else Color.White,
-            fontSize = (if (currentPlayer) 30.sp else 15.sp),
+            color = if (currentPlayer) Color(255, 85, 0) else Color.White,
+            fontSize = (if (currentPlayer) 45.sp else 20.sp),
             maxLines = 1,
             fontWeight = (if (currentPlayer) FontWeight.Bold else FontWeight.Normal)
         )
         Text(text = player.score.toString(),
-            fontSize = (if (currentPlayer) 30.sp else 15.sp),
-            color = if (currentPlayer) Color.Black else Color.White,
+            fontSize = (if (currentPlayer) 45.sp else 20.sp),
+            color = if (currentPlayer) Color(255, 85, 0) else Color.White,
             fontWeight = (if (currentPlayer) FontWeight.Bold else FontWeight.Normal)
         )
     }

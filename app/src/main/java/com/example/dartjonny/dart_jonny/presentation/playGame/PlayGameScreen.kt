@@ -86,10 +86,10 @@ fun PlayGameScreen(
             modifier = Modifier
                 .weight(2f)
                 .fillMaxSize()
-                .background(Color(77,77,77))
+                .background(Color(77, 77, 77))
         ) {
             Box(modifier = Modifier
-                .weight(1f)
+                .weight(if (!playGameState.doubleTripleHits) 1f else 2f)
                 .fillMaxSize()
             ) {
                 Row(modifier = Modifier
@@ -115,10 +115,14 @@ fun PlayGameScreen(
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 85, 0)),
                         enabled = playGameState.nextPlayerButton,
                         onClick = {
+                            if (playGameState.currentTarget in listOf("D", "T")) {
+                                viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
+                            }
                             if (playGameState.currentTargetIndex == viewModel.targets.size-1 && playGameState.currentPlayerIndex == playersState.players.size-1) {
                                 viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerWins)
                                 navController.navigate(Screen.EndOfGameScreen.route)
-                            } else viewModel.onPlayGameEvent(PlayGameEvent.NextPlayer)
+                            }
+                            else viewModel.onPlayGameEvent(PlayGameEvent.NextPlayer)
                         }
                     ) {
                         Icon(
@@ -162,9 +166,8 @@ fun PlayGameScreen(
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(1))
-                                        viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
                                     },
-                                    enabled = playGameState.doubleTripleButton
+                                    enabled = playGameState.scoreButton
                                 )
                                 ScoreButton(
                                     number = "2",
@@ -173,9 +176,8 @@ fun PlayGameScreen(
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(2))
-                                        viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
                                     },
-                                    enabled = playGameState.doubleTripleButton
+                                    enabled = playGameState.scoreButton
                                 )
                                 ScoreButton(
                                     number = "3",
@@ -184,36 +186,18 @@ fun PlayGameScreen(
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(3))
-                                        viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
                                     },
-                                    enabled = playGameState.doubleTripleButton
+                                    enabled = playGameState.scoreButton
                                 )
                             }
-
-                            TextField(
-                                value = playGameState.doubleTripleNumber,
-                                onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredDoubleTriple(it))},
-                                textStyle = TextStyle.Default.copy(fontSize = 28.sp),
-                                modifier = Modifier
-                                    .size(width = 70.dp, height = 70.dp)
-                                    .clip(RoundedCornerShape(4.dp))
-                                    .border(width = 1.dp, color = Color.Black)
-                            )
-
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .background(Color.Gray)
-                                    .weight(1f)
-                                    .clickable(onClick = {
-                                        viewModel.onPlayGameEvent(
-                                            PlayGameEvent.RestoreScore
-                                        )
-                                    }, enabled = playGameState.restoreScoreButton)
+                            Button(
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.RestoreScore) },
+                                enabled = playGameState.restoreScoreButton,
+                                colors = ButtonDefaults.buttonColors(Color.Gray)
                             ) {
                                 Icon(imageVector = Icons.Default.KeyboardBackspace,
                                     contentDescription = "Restore score",
-                                    modifier = Modifier.size(50.dp),
+                                    tint = Color.White
                                 )
                             }
                         }
@@ -226,7 +210,6 @@ fun PlayGameScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
-                            Text(text = "Fick du 41 poäng på tre pilar?")
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -234,7 +217,7 @@ fun PlayGameScreen(
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 ScoreButton(
-                                    number = "JAPP",
+                                    number = "JA",
                                     modifier = Modifier
                                         .background(Color.DarkGray)
                                         .weight(1f),
@@ -245,7 +228,7 @@ fun PlayGameScreen(
                                     enabled = playGameState.scoreButton
                                 )
                                 ScoreButton(
-                                    number = "NOPE",
+                                    number = "NEJ",
                                     modifier = Modifier
                                         .background(Color.DarkGray)
                                         .weight(1f),
@@ -256,20 +239,14 @@ fun PlayGameScreen(
                                     enabled = playGameState.scoreButton
                                 )
                             }
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .background(Color.Gray)
-                                    .weight(1f)
-                                    .clickable(onClick = {
-                                        viewModel.onPlayGameEvent(
-                                            PlayGameEvent.RestoreScore
-                                        )
-                                    }, enabled = playGameState.restoreScoreButton)
+                            Button(
+                                onClick = { viewModel.onPlayGameEvent(PlayGameEvent.RestoreScore) },
+                                enabled = playGameState.restoreScoreButton,
+                                colors = ButtonDefaults.buttonColors(Color.Gray)
                             ) {
                                 Icon(imageVector = Icons.Default.KeyboardBackspace,
                                     contentDescription = "Restore score",
-                                    modifier = Modifier.size(50.dp)
+                                    tint = Color.White
                                 )
                             }
                         }
@@ -281,7 +258,9 @@ fun PlayGameScreen(
                             verticalArrangement = Arrangement.spacedBy(1.dp)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxSize().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f),
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 ScoreButton(
@@ -317,7 +296,9 @@ fun PlayGameScreen(
                             }
 
                             Row(
-                                modifier = Modifier.fillMaxSize().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f),
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 ScoreButton(
@@ -353,7 +334,9 @@ fun PlayGameScreen(
                             }
 
                             Row(
-                                modifier = Modifier.fillMaxSize().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f),
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 ScoreButton(
@@ -389,7 +372,9 @@ fun PlayGameScreen(
                             }
 
                             Row(
-                                modifier = Modifier.fillMaxSize().weight(1f),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .weight(1f),
                                 horizontalArrangement = Arrangement.spacedBy(1.dp)
                             ) {
                                 Box(
@@ -412,10 +397,12 @@ fun PlayGameScreen(
                                     modifier = Modifier
                                         .background(Color.Gray)
                                         .weight(1f)
-                                        .clickable(onClick = {
-                                            viewModel.onPlayGameEvent(PlayGameEvent.RestoreScore)
-                                        },
-                                    enabled = playGameState.restoreScoreButton)
+                                        .clickable(
+                                            onClick = {
+                                                viewModel.onPlayGameEvent(PlayGameEvent.RestoreScore)
+                                            },
+                                            enabled = playGameState.restoreScoreButton
+                                        )
                                 ) {
                                     Icon(imageVector = Icons.Default.KeyboardBackspace,
                                         contentDescription = "Restore score",
@@ -427,6 +414,94 @@ fun PlayGameScreen(
                     }
                 }
             }
+
+            if (playGameState.doubleTripleHits) {
+                Box(modifier = Modifier
+                    .weight(4f)
+                    .fillMaxSize()) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(10.dp)) {
+                        if (playGameState.numberOfHits.toInt() == 1) {
+                            TextField(
+                                value = playGameState.doubleTripleOneHit,
+                                onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
+                                textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                modifier = Modifier
+                                    .size(width = 70.dp, height = 70.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .border(width = 1.dp, color = Color.Black)
+                            )
+                        }
+                        else if (playGameState.numberOfHits.toInt() == 2) {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = 50.dp,
+                                    alignment = Alignment.CenterHorizontally
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextField(
+                                    value = playGameState.doubleTripleOneHit,
+                                    onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    modifier = Modifier
+                                        .size(width = 70.dp, height = 70.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .border(width = 1.dp, color = Color.Black)
+                                )
+                                TextField(
+                                    value = playGameState.doubleTripleTwoHit,
+                                    onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredTwoDoubleTriple(it))},
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    modifier = Modifier
+                                        .size(width = 70.dp, height = 70.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .border(width = 1.dp, color = Color.Black)
+                                )
+                            }
+                        }
+                        else {
+                            Row(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = 40.dp,
+                                    alignment = Alignment.CenterHorizontally
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                TextField(
+                                    value = playGameState.doubleTripleOneHit,
+                                    onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredOneDoubleTriple(it))},
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    modifier = Modifier
+                                        .size(width = 70.dp, height = 70.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .border(width = 1.dp, color = Color.Black)
+                                )
+                                TextField(
+                                    value = playGameState.doubleTripleTwoHit,
+                                    onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredTwoDoubleTriple(it))},
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    modifier = Modifier
+                                        .size(width = 70.dp, height = 70.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .border(width = 1.dp, color = Color.Black)
+                                )
+                                TextField(
+                                    value = playGameState.doubleTripleThreeHit,
+                                    onValueChange = {viewModel.onPlayGameEvent(PlayGameEvent.EnteredThreeDoubleTriple(it))},
+                                    textStyle = TextStyle.Default.copy(fontSize = 28.sp),
+                                    modifier = Modifier
+                                        .size(width = 70.dp, height = 70.dp)
+                                        .clip(RoundedCornerShape(4.dp))
+                                        .border(width = 1.dp, color = Color.Black)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 }

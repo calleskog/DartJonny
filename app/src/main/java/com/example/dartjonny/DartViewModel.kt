@@ -67,12 +67,17 @@ class DartViewModel @Inject constructor(
             is PlayGameEvent.Hits -> {
                 lastScore = players.value.players[playGameState.value.currentPlayerIndex].score
                 _playGameState.value = playGameState.value.copy(
-                    score = event.number.toString(),
+                    numberOfHits = event.hits.toString(),
                     scoreButton = false,
                     nextPlayerButton = true,
-                    doubleTripleButton = false,
-                    restoreScoreButton = true
+                    restoreScoreButton = true,
                 )
+                if ((event.hits != 0) && (playGameState.value.currentTarget in listOf("D", "T"))) {
+                    _playGameState.value = playGameState.value.copy(
+                        doubleTripleHits = true,
+                        nextPlayerButton = false
+                    )
+                }
             }
             is PlayGameEvent.UpdatePlayerScore -> {
                 viewModelScope.launch {
@@ -81,7 +86,7 @@ class DartViewModel @Inject constructor(
                             playerName = players.value.players[playGameState.value.currentPlayerIndex].playerName,
                             score = resolveScore(
                                 currentScore = players.value.players[playGameState.value.currentPlayerIndex].score,
-                                numberOfHits = playGameState.value.score.toInt(),
+                                numberOfHits = playGameState.value.numberOfHits.toInt(),
                                 target = playGameState.value.currentTarget
                             )
                         )
@@ -111,11 +116,23 @@ class DartViewModel @Inject constructor(
                     }
                 }
             }
-            is PlayGameEvent.EnteredDoubleTriple -> {
+            is PlayGameEvent.EnteredOneDoubleTriple -> {
                 _playGameState.value = playGameState.value.copy(
-                    doubleTripleNumber = event.value,
-                    doubleTripleButton = true
+                    doubleTripleOneHit = event.value,
                 )
+                nextPlayerButton()
+            }
+            is PlayGameEvent.EnteredTwoDoubleTriple -> {
+                _playGameState.value = playGameState.value.copy(
+                    doubleTripleTwoHit = event.value
+                )
+                nextPlayerButton()
+            }
+            is PlayGameEvent.EnteredThreeDoubleTriple -> {
+                _playGameState.value = playGameState.value.copy(
+                    doubleTripleThreeHit = event.value
+                )
+                nextPlayerButton()
             }
             is PlayGameEvent.NextPlayer -> {
                 if (playGameState.value.currentPlayerIndex < players.value.players.size - 1) {
@@ -123,8 +140,10 @@ class DartViewModel @Inject constructor(
                         currentPlayerIndex = playGameState.value.currentPlayerIndex + 1,
                         scoreButton = true,
                         nextPlayerButton = false,
-                        doubleTripleButton = false,
-                        doubleTripleNumber = "",
+                        doubleTripleOneHit = "",
+                        doubleTripleTwoHit = "",
+                        doubleTripleThreeHit = "",
+                        doubleTripleHits = false,
                         restoreScoreButton = false
                     )
                 } else {
@@ -134,8 +153,10 @@ class DartViewModel @Inject constructor(
                         currentTarget = targets[playGameState.value.currentTargetIndex + 1],
                         scoreButton = true,
                         nextPlayerButton = false,
-                        doubleTripleButton = false,
-                        doubleTripleNumber = "",
+                        doubleTripleOneHit = "",
+                        doubleTripleTwoHit = "",
+                        doubleTripleThreeHit = "",
+                        doubleTripleHits = false,
                         restoreScoreButton = false
                     )
                 }
@@ -146,23 +167,39 @@ class DartViewModel @Inject constructor(
                         playerName = players.value.players[playGameState.value.currentPlayerIndex].playerName,
                         score = lastScore
                     )
-                    if (playGameState.value.currentTarget in listOf("D", "T")) {
-                        _playGameState.value = playGameState.value.copy(
-                            scoreButton = true,
-                            restoreScoreButton = false,
-                            doubleTripleButton = false,
-                            nextPlayerButton = false
-                        )
-                    }
-                    else {
-                        _playGameState.value = playGameState.value.copy(
-                            restoreScoreButton = false,
-                            scoreButton = true,
-                            nextPlayerButton = false,
-                            doubleTripleButton = true
-                        )
-                    }
+                    _playGameState.value = playGameState.value.copy(
+                        scoreButton = true,
+                        restoreScoreButton = false,
+                        nextPlayerButton = false,
+                        doubleTripleOneHit = "",
+                        doubleTripleTwoHit = "",
+                        doubleTripleThreeHit = "",
+                        doubleTripleHits = false
+                    )
                 }
+            }
+        }
+    }
+
+    private fun nextPlayerButton() {
+        if (playGameState.value.numberOfHits.toInt() == 1) {
+            _playGameState.value = playGameState.value.copy(
+                nextPlayerButton = true
+            )
+        }
+        else if (playGameState.value.numberOfHits.toInt() == 2) {
+            if (playGameState.value.doubleTripleOneHit.isNotEmpty() && playGameState.value.doubleTripleTwoHit.isNotEmpty()) {
+                _playGameState.value = playGameState.value.copy(
+                    nextPlayerButton = true
+                )
+            }
+
+        }
+        else if (playGameState.value.numberOfHits.toInt() == 3) {
+            if (playGameState.value.doubleTripleOneHit.isNotEmpty() && playGameState.value.doubleTripleTwoHit.isNotEmpty() && playGameState.value.doubleTripleThreeHit.isNotEmpty()) {
+                _playGameState.value = playGameState.value.copy(
+                    nextPlayerButton = true
+                )
             }
         }
     }
@@ -173,11 +210,31 @@ class DartViewModel @Inject constructor(
         }
 
         if (target == "D") {
-            return currentScore + (numberOfHits * playGameState.value.doubleTripleNumber.toInt() * 2)
+            return when (numberOfHits) {
+                1 -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 2)
+                }
+                2 -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 2) + (playGameState.value.doubleTripleTwoHit.toInt() * 2)
+                }
+                else -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 2) + (playGameState.value.doubleTripleTwoHit.toInt() * 2) + (playGameState.value.doubleTripleThreeHit.toInt() * 2)
+                }
+            }
         }
 
         if (target == "T") {
-            return currentScore + (numberOfHits * playGameState.value.doubleTripleNumber.toInt() * 3)
+            return when (numberOfHits) {
+                1 -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 3)
+                }
+                2 -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 3) + (playGameState.value.doubleTripleTwoHit.toInt() * 3)
+                }
+                else -> {
+                    currentScore + (playGameState.value.doubleTripleOneHit.toInt() * 3) + (playGameState.value.doubleTripleTwoHit.toInt() * 3) + (playGameState.value.doubleTripleThreeHit.toInt() * 3)
+                }
+            }
         }
 
         if (target == "B") {

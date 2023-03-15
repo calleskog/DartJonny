@@ -64,7 +64,7 @@ fun EndOfGameScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .background(Color(40,40,40))
+                .background(Color(255, 85, 0))
                 .height(60.dp)
                 .clickable(onClick = { navController.navigate(Screen.NewGameScreen.route) }),
             horizontalArrangement = Arrangement.Center,
