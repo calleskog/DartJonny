@@ -52,6 +52,7 @@ fun NewGameScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .background(Color(37, 37, 37, 255))
                     .fillMaxSize()
             ) {
                 Row(

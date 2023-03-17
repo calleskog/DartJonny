@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dartjonny.dart_jonny.presentation.addPlayer.AddPlayerScreen
 import com.example.dartjonny.dart_jonny.presentation.completedGame.EndOfGameScreen
+import com.example.dartjonny.dart_jonny.presentation.leaderboard.LeaderboardScreen
 import com.example.dartjonny.dart_jonny.presentation.newGame.NewGameScreen
 import com.example.dartjonny.dart_jonny.presentation.playGame.PlayGameScreen
 import com.example.dartjonny.ui.theme.DartJonnyTheme
@@ -39,6 +40,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = Screen.EndOfGameScreen.route) {
                         EndOfGameScreen(navController = navController)
+                    }
+                    composable(route = Screen.LeaderboardScreen.route) {
+                        LeaderboardScreen(navController = navController)
                     }
                 }
             }

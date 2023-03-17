@@ -71,7 +71,7 @@ fun MainScreen(navController: NavController) {
                         .height(60.dp)
                         .fillMaxWidth()
                         .background(Color.White)
-                        .clickable(onClick = { navController.navigate(Screen.EndOfGameScreen.route) }),
+                        .clickable(onClick = { navController.navigate(Screen.LeaderboardScreen.route) }),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                 ) {

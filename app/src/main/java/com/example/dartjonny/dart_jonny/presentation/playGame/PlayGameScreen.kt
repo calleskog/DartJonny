@@ -30,7 +30,7 @@ import androidx.navigation.NavController
 import com.example.dartjonny.DartViewModel
 import com.example.dartjonny.R
 import com.example.dartjonny.Screen
-import com.example.dartjonny.dart_jonny.presentation.playGame.components.Leaderboard
+import com.example.dartjonny.dart_jonny.presentation.playGame.components.Scoreboard
 import com.example.dartjonny.dart_jonny.presentation.playGame.components.ScoreButton
 
 
@@ -56,7 +56,7 @@ fun PlayGameScreen(
             ) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(playersState.players) { player ->
-                        Leaderboard(
+                        Scoreboard(
                             player = player,
                             currentPlayer = player == playersState.players[playGameState.currentPlayerIndex]
                         )
@@ -78,7 +78,7 @@ fun PlayGameScreen(
                 Text(
                     text = playGameState.currentTarget,
                     fontSize = 70.sp,
-                    color = Color.Red,
+                    color = Color(255, 85, 0),
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -117,7 +117,7 @@ fun PlayGameScreen(
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color(255, 85, 0)),
                         enabled = playGameState.nextPlayerButton,
                         onClick = {
-                            if (playGameState.currentTarget in listOf("D", "T")) {
+                            if (playGameState.currentTarget in listOf("D", "T") && playGameState.numberOfHits.toInt() != 0) {
                                 viewModel.onPlayGameEvent(PlayGameEvent.UpdatePlayerScore)
                             }
                             if (playGameState.currentTargetIndex == viewModel.targets.size-1 && playGameState.currentPlayerIndex == playersState.players.size-1) {
@@ -153,7 +153,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "0",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(0))
@@ -164,7 +163,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "1",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(1))
@@ -174,7 +172,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "2",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(2))
@@ -184,7 +181,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "3",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(3))
@@ -221,7 +217,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "JA",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(1))
@@ -232,7 +227,6 @@ fun PlayGameScreen(
                                 ScoreButton(
                                     number = "NEJ",
                                     modifier = Modifier
-                                        .background(Color.DarkGray)
                                         .weight(1f),
                                     onClick = {
                                         viewModel.onPlayGameEvent(PlayGameEvent.Hits(0))
@@ -408,7 +402,7 @@ fun PlayGameScreen(
                                 ) {
                                     Icon(imageVector = Icons.Default.KeyboardBackspace,
                                         contentDescription = "Restore score",
-                                        modifier = Modifier.size(33.dp)
+                                        modifier = Modifier.size(45.dp)
                                     )
                                 }
                             }

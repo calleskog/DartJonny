@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.dartjonny.dart_jonny.model.Player
 
 @Composable
-fun Leaderboard(
+fun Scoreboard(
     player: Player,
     currentPlayer: Boolean
 ) {
